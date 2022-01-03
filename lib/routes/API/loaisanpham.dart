@@ -1,18 +1,19 @@
- 
-import 'dart:convert';  
-import 'package:http/http.dart' as http;  
-import '../models/producttype.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import '../models/catagory.dart';
 
-List<DanhMuc> danhmucs(String response) {
-  var list = jsonDecode(response);
+List<LoaiSanPham> LoaiSanPhams(String response) {
+  var list = jsonDecode(response).cast<Map<String, dynamic>>();
 
-  return list.map<DanhMuc>((model) => DanhMuc.fromJson(model)).toList();
-  //return list.map((model)=>DanhMuc.fromJson(model));
+  return list.map<LoaiSanPham>((json) => LoaiSanPham.fromJson(json)).toList();
 }
 
-// Future<List<DanhMuc>> fetchPostLoai() async {
-
-//   final response = await http.get(Uri.parse(''));
-  
-//   return danhmucs(response.body);
-// }
+Future<List<LoaiSanPham>> fetchLoaiSanPham() async {
+  final response =
+      await http.get(Uri.parse('http://10.0.2.2:8000/api/loaiSanPham'));
+  if (response.statusCode == 200) {
+    return LoaiSanPhams(response.body);
+  } else {
+    throw Exception('No find data');
+  }
+}

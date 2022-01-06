@@ -33,7 +33,6 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const ScreenLoad(),
         '/second': (context) => const Home(),
-        '/product':(context)=> SanPham(),
         '/myhome': (context) => const MyHome(),
         '/setting': (context) => const PageSetting(),
         '/profile': (context) => const PageProFile(),

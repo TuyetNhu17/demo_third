@@ -20,8 +20,7 @@ Future<List<Product>>fetchPostSanPham() async {
 }
 
 Future<List<Product>>fetchSanPhamtheoLoai(int idLoaisp) async {
-
-  final response = await http.get(Uri.parse('http://10.0.2.2:8000/api/sanPham'+idLoaisp.toString()));
+  final response = await http.get(Uri.parse('http://10.0.2.2:8000/api/sanPham/$idLoaisp'));
   if (response.statusCode == 200) {
     return sanphams(response.body);
   } else {

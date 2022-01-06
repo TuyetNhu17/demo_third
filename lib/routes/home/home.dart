@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:giaodien/Element/General.dart';
+import 'package:giaodien/SanPham.dart';
 import 'package:giaodien/routes/API/loaisanpham.dart';
 import 'package:giaodien/routes/models/catagory.dart';
 import '../models/banner.dart';
@@ -134,9 +135,7 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
               abc.data[index].hinh_anh;
           return InkWell(
             onTap: () {
-              Navigator.pushNamed(
-                context,'/product'
-              );
+              Navigator.push(context, MaterialPageRoute(builder: (_)=>SanPham(idloaisp: abc.data[index].id)));
             },
             child: Card(
               color: Color(0xffe59191),
@@ -149,7 +148,6 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
                     width: 160,
                     child: ClipOval(
                         child: Container(
-                      // child: Image.network(link), padding: EdgeInsets.all(10),
                       child: CachedNetworkImage(
                         fit: BoxFit.fill,
                         imageUrl: link,

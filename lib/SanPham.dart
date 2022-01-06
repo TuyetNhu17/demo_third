@@ -1,22 +1,39 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:giaodien/Element/General.dart';
+import 'package:giaodien/routes/models/catagory.dart';
+import 'package:giaodien/routes/product/product_detail.dart';
 
 import 'routes/API/sanpham.dart';
 import 'routes/models/product.dart';
 
-class SanPham extends StatefulWidget {
-  SanPham({Key? key}) : super(key: key);
-  // SanPham({required this.idLoaisp}) : super();
-  // final int idLoaisp;
-  @override
-  SanPhamTheoLoai createState() => SanPhamTheoLoai();
-}
+class SanPham extends StatelessWidget {
+  final int idloaisp;
+  const SanPham({Key? key, required this.idloaisp}) : super(key: key);
 
-class SanPhamTheoLoai extends State<SanPham> {
-  Future<List<Product>> lstSanPham = fetchPostSanPham();
+  
   @override
   Widget build(BuildContext context) {
+    Future<List<Product>> lstSanPham = fetchSanPhamtheoLoai(idloaisp);
+    Widget listSanPham() {
+    return ListView(
+      children: [
+        Center(
+          child: FutureBuilder<List<Product>>(
+            future: lstSanPham,
+            builder: (context, abc) {
+              if (abc.hasData) {
+                return sanpham(abc,context);
+              } else if (abc.hasError) {
+                return Text("${abc.error}");
+              }
+              return const CircularProgressIndicator();
+            },
+          ),
+        ),
+      ],
+    );
+  }
     return GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -72,37 +89,17 @@ class SanPhamTheoLoai extends State<SanPham> {
         ));
   }
 
-  Widget listSanPham() {
-    return ListView(
-      children: [
-        Center(
-          child: FutureBuilder<List<Product>>(
-            future: lstSanPham,
-            builder: (context, abc) {
-              if (abc.hasData) {
-                return sanpham(abc);
-              } else if (abc.hasError) {
-                return Text("${abc.error}");
-              }
-              return const CircularProgressIndicator();
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-  sanpham(AsyncSnapshot abc) {
+  sanpham(AsyncSnapshot abc,BuildContext context) {
     return Wrap(
       children: List.generate(abc.data.length, (index) {
         String link =
             'http://10.0.2.2:8000/images/product/' + abc.data[index].hinh_anh;
         return InkWell(
           onTap: () {
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (_) => PageDetail(product: abc.data[index])));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => PageDetail(product: abc.data[index])));
           },
           child: Card(
             color: Color(0xffe59191),

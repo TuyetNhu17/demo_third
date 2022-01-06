@@ -1,10 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:giaodien/Element/General.dart';
 import 'package:giaodien/routes/API/loaisanpham.dart';
 import 'package:giaodien/routes/models/catagory.dart';
 import '../models/banner.dart';
-import '../product/product.dart';
 import '../account/myhome.dart';
 
 class Home extends StatefulWidget {
@@ -116,7 +116,7 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
       margin: const EdgeInsets.fromLTRB(10, 0, 250, 0),
       child: const Center(
         child: Text(
-          'Chủ Đề',
+          'Danh Mục',
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -130,14 +130,13 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
     wrap(AsyncSnapshot abc) {
       return Wrap(
         children: List.generate(abc.data.length, (index) {
-          String linkhinh = "http://10.0.2.2:8000/images/catagory/" +
+          String link = 'http://10.0.2.2:8000/images/catagory/' +
               abc.data[index].hinh_anh;
           return InkWell(
             onTap: () {
-              // Navigator.push(context,
-              // MaterialPageRoute(builder: (context) => const PageProduct())
-              // );
-              print(list);
+              Navigator.pushNamed(
+                context,'/product'
+              );
             },
             child: Card(
               color: Color(0xffe59191),
@@ -145,27 +144,25 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Container(
-                    width: 170,
-                    height: 170,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 3,
-                          blurRadius: 7,
-                          offset: const Offset(3, 2),
+                  SizedBox(
+                    height: 160,
+                    width: 160,
+                    child: ClipOval(
+                        child: Container(
+                      // child: Image.network(link), padding: EdgeInsets.all(10),
+                      child: CachedNetworkImage(
+                        fit: BoxFit.fill,
+                        imageUrl: link,
+                        placeholder: (context, url) => const Center(
+                          child: CircularProgressIndicator(),
                         ),
-                      ],
-                      image: DecorationImage(
-                        image: NetworkImage(linkhinh),
-                        fit: BoxFit.fitHeight,
+                        errorWidget: (context, url, error) => Container(
+                          color: Colors.black12,
+                        ),
                       ),
-                    ),
-                    margin: const EdgeInsets.fromLTRB(15, 20, 10, 20),
+                    )),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 10,
                   ),
                   Text(

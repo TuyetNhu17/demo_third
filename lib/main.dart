@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:giaodien/InvoiceDetail.dart';
+import 'package:giaodien/SanPham.dart';
 import 'package:giaodien/Signup.dart';
 import 'package:giaodien/Review.dart';
 import 'package:giaodien/ReviewForm.dart';
@@ -7,6 +8,7 @@ import 'package:giaodien/routes/account/myhome.dart';
 import 'package:giaodien/routes/account/profile.dart';
 import 'package:giaodien/routes/account/setting.dart';
 import 'package:giaodien/routes/home/home.dart';
+import 'package:giaodien/routes/product/product.dart';
 import 'package:giaodien/routes/screen_load/screen_load.dart';
 import 'ForgotPass.dart';
 import 'ChangePass.dart';
@@ -31,6 +33,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const ScreenLoad(),
         '/second': (context) => const Home(),
+        '/product':(context)=> SanPham(),
         '/myhome': (context) => const MyHome(),
         '/setting': (context) => const PageSetting(),
         '/profile': (context) => const PageProFile(),

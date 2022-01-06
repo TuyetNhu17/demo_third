@@ -11,7 +11,20 @@ List<Product> sanphams(String response) {
 
 Future<List<Product>>fetchPostSanPham() async {
 
-  final response = await http.get(Uri.parse(''));
+  final response = await http.get(Uri.parse('http://10.0.2.2:8000/api/sanPham'));
+  if (response.statusCode == 200) {
+    return sanphams(response.body);
+  } else {
+    throw Exception('No find data');
+  }
+}
 
-  return sanphams(response.body);
+Future<List<Product>>fetchSanPhamtheoLoai(int idLoaisp) async {
+
+  final response = await http.get(Uri.parse('http://10.0.2.2:8000/api/sanPham'+idLoaisp.toString()));
+  if (response.statusCode == 200) {
+    return sanphams(response.body);
+  } else {
+    throw Exception('No find data');
+  }
 }

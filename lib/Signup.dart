@@ -1,11 +1,11 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:giaodien/Element/colorbutton.dart';
+import 'package:giaodien/routes/home/home.dart';
 import 'Element/textfield.dart';
 import 'Element/General.dart';
 import 'Element/Titile.dart';
 
+import 'routes/API/APIaccount.dart';
 
 enum sex { nam, nu }
 sex _sex = sex.nam;
@@ -18,6 +18,10 @@ class SignupSreen extends StatefulWidget {
 }
 
 class Signup extends State<SignupSreen> {
+  var aaaa;
+
+  get diachi => null;
+
   Column radio(String a, sex gioitinh) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -38,6 +42,18 @@ class Signup extends State<SignupSreen> {
     );
   }
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  TextEditingController _tendangnhap = TextEditingController();
+  TextEditingController _email = TextEditingController();
+  TextEditingController _matkhau = TextEditingController();
+  final TextEditingController _xacnhanmatkhau = TextEditingController();
+  TextEditingController _sdt = TextEditingController();
+  TextEditingController _diachi = TextEditingController();
+  TextEditingController _ngaysinh = TextEditingController();
+  TextEditingController _gioitinh = TextEditingController();
+  TextEditingController _hoten = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,76 +61,107 @@ class Signup extends State<SignupSreen> {
           title: TitleAppBar('Đăng kí'),
           backgroundColor: Color(0xffe59191),
         ),
-        body: background(ListView(
+        body: background(
+            ListView(
+              children: [
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Image.asset(
+                        'images/logo.jpg',
+                        width: 250,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      ),
+                      form("Tên đăng nhập", Icons.account_circle,
+                          TextInputType.text, false, _tendangnhap),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      form("Email", Icons.email, TextInputType.text, false,
+                          _email),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      form("Họ tên", Icons.email, TextInputType.text, false,
+                          _hoten),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      form("Mật khẩu", Icons.password, TextInputType.text, true,
+                          _matkhau),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      form("Nhập lại mật khẩu", Icons.password,
+                          TextInputType.text, true, _xacnhanmatkhau),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      form("Số điện thoại", Icons.phone, TextInputType.number,
+                          false, _sdt),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      form("Địa chỉ", Icons.home, TextInputType.text, false,
+                          _diachi),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      form("Ngày sinh", Icons.cake, TextInputType.datetime,
+                          false, _ngaysinh),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
                         children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Image.asset(
-                                'images/logo.jpg',
-                                width: 250,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              ),
-                              form("Tên đăng nhập", Icons.account_circle,
-                                  TextInputType.text, false),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              form("Email", Icons.email, TextInputType.text,
-                                  false),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              form("Mật khẩu", Icons.password,
-                                  TextInputType.text, true),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              form("Nhập lại mật khẩu", Icons.password,
-                                  TextInputType.text, true),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              form("Số điện thoại", Icons.phone,
-                                  TextInputType.number, false),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              form("Địa chỉ", Icons.home, TextInputType.text,
-                                  false),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              form("Ngày sinh", Icons.cake,
-                                  TextInputType.datetime, false),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: radio("Nam", sex.nam),
-                                  ),
-                                  Expanded(
-                                    child: radio("Nữ", sex.nu),
-                                  ),
-                                ],
-                              ),
-                              colorbutton(FlatButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(context, '/second');
-                                },
-                                child: const Text(
-                                  "Tạo tài khoản",
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.white),
-                                ),
-                              )),
-                            ],
+                          Expanded(
+                            child: radio("Nam", sex.nam),
+                          ),
+                          Expanded(
+                            child: radio("Nữ", sex.nu),
                           ),
                         ],
-                      ), context)
-                );
+                      ),
+                      colorbutton(FlatButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            DangKiTaiKhoan();
+                            print('Sucess');
+                          } else {
+                            print('Unsuccess');
+                          }
+                        },
+                        child: const Text(
+                          "Tạo tài khoản",
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                      )),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            context));
+  }
+
+  // ignore: non_constant_identifier_names
+  Future DangKiTaiKhoan() async {
+    Map<String, String> data = {
+      '_tendangnhap': _tendangnhap.text,
+      '_email': _email.text,
+      '_matkhau': _matkhau.text,
+      '_hoten': _hoten.text,
+      '_sodienthoai': _sdt.text,
+      '_diachi': _diachi.text,
+    };
+    var res = await postData(data, 'khachHang/');
+    if (res == 'Success') {
+      Navigator.pushNamed(context, '/second');
+    } else {
+      print('Fail');
+    }
   }
 }

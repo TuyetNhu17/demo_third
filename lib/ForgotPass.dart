@@ -35,21 +35,21 @@ class ForgotPass extends State<ForgotPassScreen> {
                             height: 100,
                             fit: BoxFit.cover,
                           ),
-                          form("Tên đăng nhập", Icons.account_circle,
-                              TextInputType.text, true),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          form("Email", Icons.email, TextInputType.text,
-                              false),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          form("Số điện thoại", Icons.phone,
-                              TextInputType.number, false),
-                          const SizedBox(
-                            height: 10,
-                          ),
+                          // form("Tên đăng nhập", Icons.account_circle,
+                          //     TextInputType.text, true),
+                          // const SizedBox(
+                          //   height: 10,
+                          // ),
+                          // form("Email", Icons.email, TextInputType.text,
+                          //     false),
+                          // const SizedBox(
+                          //   height: 10,
+                          // ),
+                          // form("Số điện thoại", Icons.phone,
+                          //     TextInputType.number, false),
+                          // const SizedBox(
+                          //   height: 10,
+                          // ),
                           Container(
                             width: 130.0,
                             height: 43.0,

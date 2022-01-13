@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:giaodien/Element/General.dart';
 import 'package:giaodien/SanPham.dart';
-import 'package:giaodien/routes/API/loaisanpham.dart';
+import 'package:giaodien/routes/API/APIcatagory.dart';
 import 'package:giaodien/routes/models/catagory.dart';
 import '../models/banner.dart';
 import '../account/myhome.dart';

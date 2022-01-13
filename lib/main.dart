@@ -48,6 +48,7 @@ class MyApp extends StatelessWidget {
         '/method_pay': (context) =>  MethodPayScreen(),
         '/pay': (context) => PayScreen(),
         '/shopping_address': (context) => ShoppingAddressScreen(),
+        '/findproduct':(context)=> CustomSearch(),
       },
       debugShowCheckedModeBanner: false,
     );

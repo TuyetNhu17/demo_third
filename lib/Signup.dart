@@ -1,14 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:giaodien/Element/colorbutton.dart';
-import 'package:giaodien/routes/home/home.dart';
 import 'Element/textfield.dart';
 import 'Element/General.dart';
 import 'Element/Titile.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'routes/API/APIaccount.dart';
 
-enum sex { nam, nu }
-sex _sex = sex.nam;
+// enum sex { nam, nu }
+// sex _sex = sex.nam;
 
 class SignupSreen extends StatefulWidget {
   const SignupSreen({Key? key}) : super(key: key);
@@ -18,29 +20,25 @@ class SignupSreen extends StatefulWidget {
 }
 
 class Signup extends State<SignupSreen> {
-  var aaaa;
-
-  get diachi => null;
-
-  Column radio(String a, sex gioitinh) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        RadioListTile<sex>(
-          contentPadding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-          title: Text(a),
-          value: gioitinh,
-          groupValue: _sex,
-          onChanged: (sex? value) {
-            setState(() {
-              _sex = value!;
-            });
-          },
-        ),
-      ],
-    );
-  }
+  // Column radio(String a, sex gioitinh) {
+  //   return Column(
+  //     mainAxisSize: MainAxisSize.min,
+  //     mainAxisAlignment: MainAxisAlignment.center,
+  //     children: [
+  //       RadioListTile<sex>(
+  //         contentPadding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+  //         title: Text(a),
+  //         value: gioitinh,
+  //         groupValue: _sex,
+  //         onChanged: (sex? value) {
+  //           setState(() {
+  //             _sex = value!;
+  //           });
+  //         },
+  //       ),
+  //     ],
+  //   );
+  // }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -53,6 +51,8 @@ class Signup extends State<SignupSreen> {
   TextEditingController _ngaysinh = TextEditingController();
   TextEditingController _gioitinh = TextEditingController();
   TextEditingController _hoten = TextEditingController();
+  PickedFile? _imageFile;
+  final ImagePicker _picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -69,12 +69,7 @@ class Signup extends State<SignupSreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      Image.asset(
-                        'images/logo.jpg',
-                        width: 250,
-                        height: 100,
-                        fit: BoxFit.cover,
-                      ),
+                      AvatarProfile(),
                       form("Tên đăng nhập", Icons.account_circle,
                           TextInputType.text, false, _tendangnhap),
                       const SizedBox(
@@ -115,16 +110,16 @@ class Signup extends State<SignupSreen> {
                       const SizedBox(
                         height: 10,
                       ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: radio("Nam", sex.nam),
-                          ),
-                          Expanded(
-                            child: radio("Nữ", sex.nu),
-                          ),
-                        ],
-                      ),
+                      // Row(
+                      //   children: [
+                      //     Expanded(
+                      //       child: radio("Nam", sex.nam),
+                      //     ),
+                      //     Expanded(
+                      //       child: radio("Nữ", sex.nu),
+                      //     ),
+                      //   ],
+                      // ),
                       colorbutton(FlatButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
@@ -156,6 +151,7 @@ class Signup extends State<SignupSreen> {
       '_hoten': _hoten.text,
       '_sodienthoai': _sdt.text,
       '_diachi': _diachi.text,
+      
     };
     var res = await postData(data, 'khachHang/');
     if (res == 'Success') {
@@ -163,5 +159,45 @@ class Signup extends State<SignupSreen> {
     } else {
       print('Fail');
     }
+  }
+
+  Future Avatar() async {}
+
+  void takePhoto() async {
+    final _pickedFile = await _picker.getImage(source: ImageSource.gallery);
+    setState(() {
+      _imageFile = _pickedFile!;
+    });
+    print(_imageFile!.path);
+  }
+
+  Widget AvatarProfile() {
+    return Center(
+      child: Stack(
+        children: [
+          _imageFile == null
+              ? CircleAvatar(
+                  radius: 80.0,
+                  backgroundImage: AssetImage('images/avatar.png'),
+                )
+              : CircleAvatar(
+                  radius: 80.0,
+                  backgroundImage: FileImage(File(_imageFile!.path)),
+                ),
+          Positioned(
+              bottom: 20.0,
+              right: 20.0,
+              child: InkWell(
+                  onTap: () {
+                    takePhoto();
+                  },
+                  child: Icon(
+                    Icons.camera_alt,
+                    color: Colors.black87,
+                    size: 28.0,
+                  )))
+        ],
+      ),
+    );
   }
 }

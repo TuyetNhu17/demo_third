@@ -10,6 +10,7 @@ import 'package:giaodien/routes/account/setting.dart';
 import 'package:giaodien/routes/home/home.dart';
 import 'package:giaodien/routes/product/product.dart';
 import 'package:giaodien/routes/screen_load/screen_load.dart';
+import 'package:giaodien/routes/search/search.dart';
 import 'ForgotPass.dart';
 import 'ChangePass.dart';
 import 'Invoice.dart';
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
         '/pay': (context) => PayScreen(),
         '/shopping_address': (context) => ShoppingAddressScreen(),
         '/findproduct':(context)=> CustomSearch(),
+        '/search': (context) => SearchProduct(),
       },
       debugShowCheckedModeBanner: false,
     );

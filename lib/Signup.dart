@@ -259,7 +259,7 @@ class Signup extends State<SignupSreen> {
               right: 20.0,
               child: InkWell(
                   onTap: () {
-                    takePhoto();
+                    takePhoto(); 
                   },
                   child: Icon(
                     Icons.camera_alt,

@@ -158,16 +158,38 @@ class _LoginScreenState extends State<LoginScreen>{
     );
   }
 
-  Widget buildLoginBtn(BuildContext context, String mess, String route){
+  Widget buildLoginBtn(BuildContext context, String mess){
     return Container(
       padding: EdgeInsets.symmetric(vertical: 20),
       width: double.infinity,
       child: RaisedButton(
         elevation: 5,
         onPressed: () {
-          setState(() {
-            _isLoading = true;
-          });
+          Login();
+        },
+        padding: EdgeInsets.all(15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        color: Color(0xffe59191),
+        child: Text(
+          mess,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+    Widget buildSignUpBtn(BuildContext context, String mess, String route){
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 20),
+      width: double.infinity,
+      child: RaisedButton(
+        elevation: 5,
+        onPressed: () {
           Login();
           Navigator.pushNamed(context, route);
         },
@@ -232,11 +254,11 @@ class _LoginScreenState extends State<LoginScreen>{
                     ),
                     buildPass(),
                     buildForgotPassBtn(),
-                    buildLoginBtn(context,'Đăng nhập','/second'),
+                    buildLoginBtn(context,'Đăng nhập'),
                     SizedBox(
                       height: 5,
                     ),
-                    buildLoginBtn(context,'Đăng ký','/signup'),
+                    buildSignUpBtn(context,'Đăng ký','/signup'),
                   ],
                 ),
                 ),

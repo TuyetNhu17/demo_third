@@ -13,13 +13,13 @@ class Banner {
 final List<Banner> banner = [
   Banner(
     id: 1,
-    imgurl: 'images/banner/banner1.jpg'
+    imgurl: 'images/banner/banner1.png'
     
     
   ),
   Banner(
     id: 2,
-    imgurl: 'images/banner/banner2.jpg'
+    imgurl: 'images/banner/banner2.png'
     
   ),
   Banner(

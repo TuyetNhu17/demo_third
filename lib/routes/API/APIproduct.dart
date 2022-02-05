@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'package:giaodien/routes/models/account.dart';
+import 'package:flutter/material.dart';
+import 'package:giaodien/Invoice.dart';
 import 'package:http/http.dart' as http;
 import '../models/product.dart';
 
@@ -9,7 +10,7 @@ List<Product> sanphams(String response) {
   return list.map<Product>((model) => Product.fromJson(model)).toList();
 }
 
-Future<List<Product>> fetchPostSanPham() async {
+Future<List<Product>> laySanPhamall() async {
   final response =
       await http.get(Uri.parse('http://10.0.2.2:8000/api/sanPham'));
   if (response.statusCode == 200) {
@@ -19,7 +20,58 @@ Future<List<Product>> fetchPostSanPham() async {
   }
 }
 
-Future<List<Product>> fetchSanPhamtheoLoai(int idLoaisp) async {
+class LaySanPhamProvider extends ChangeNotifier {
+  List<Product> sanphams = [];
+  Future<void> LaySanPham() async {
+    List<Product> sanpham2 = [];
+    var url = "http://10.0.2.2:8000/api/sanPham";
+    http.Response response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      dynamic jsondata = json.decode(response.body);
+      dynamic data = jsondata["data"];
+      data.forEach((i) {
+        sanpham2.add(Product.fromJson(i));
+      });
+    } else {
+      throw Exception('No find data');
+    }
+    sanphams = sanpham2;
+
+    notifyListeners();
+  }
+}
+
+Future<List<Product>> SanPhamTrangChu() async {
+  final response =
+      await http.get(Uri.parse('http://10.0.2.2:8000/api/sanpham/trangchu'));
+  if (response.statusCode == 200) {
+    return sanphams(response.body);
+  } else {
+    throw Exception('No find data');
+  }
+}
+
+Future<List<Product>> SanPhamMoi() async {
+  final response =
+      await http.get(Uri.parse('http://10.0.2.2:8000/api/sanpham/sanphammoi'));
+  if (response.statusCode == 200) {
+    return sanphams(response.body);
+  } else {
+    throw Exception('No find data');
+  }
+}
+
+Future<List<Product>> SanPhamBanChay() async {
+  final response = await http
+      .get(Uri.parse('http://10.0.2.2:8000/api/sanpham/sanphambanchay'));
+  if (response.statusCode == 200) {
+    return sanphams(response.body);
+  } else {
+    throw Exception('No find data');
+  }
+}
+
+Future<List<Product>> laySanPhamtheoLoai(int idLoaisp) async {
   final response =
       await http.get(Uri.parse('http://10.0.2.2:8000/api/sanPham/$idLoaisp'));
   if (response.statusCode == 200) {
@@ -28,4 +80,3 @@ Future<List<Product>> fetchSanPhamtheoLoai(int idLoaisp) async {
     throw Exception('No find data');
   }
 }
-

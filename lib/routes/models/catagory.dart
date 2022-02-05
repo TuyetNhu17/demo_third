@@ -1,14 +1,14 @@
-class LoaiSanPham {
+class Categori{
   final int id;
   final String ten_loai;
   final String hinh_anh;
-  LoaiSanPham({
+  Categori({
     required this.id,
     required this.ten_loai,
     required this.hinh_anh,
    
   });
-  LoaiSanPham.fromJson(Map<String, dynamic> json)
+  Categori.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         ten_loai = json['ten_loai'],
         hinh_anh = json['hinh_anh'];

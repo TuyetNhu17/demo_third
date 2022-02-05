@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:giaodien/Element/General.dart';
 import 'package:giaodien/SanPham.dart';
-import 'package:giaodien/routes/API/APIcatagory.dart';
-import 'package:giaodien/routes/models/catagory.dart';
+import 'package:giaodien/routes/API/APIproduct.dart';
+import 'package:giaodien/routes/models/product.dart';
+import 'package:giaodien/routes/product/product.dart';
+import 'package:giaodien/routes/product/product_detail.dart';
 import '../models/banner.dart';
 import '../account/myhome.dart';
 
@@ -15,7 +17,7 @@ class Home extends StatefulWidget {
 }
 
 class HomePage extends State<Home> with SingleTickerProviderStateMixin {
-  Future<List<LoaiSanPham>> list = fetchLoaiSanPham();
+  Future<List<Product>> list = SanPhamTrangChu();
 
   late PageController _pageController;
   @override
@@ -63,14 +65,16 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
                       ],
                     ),
                     child: Center(
-                      child: Hero(
-                        tag: banner[index].imgurl,
+                      child: InkWell(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (_)=>SanPham(id: banner[index].id)));
+                        },
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: Image(
                             image: AssetImage(banner[index].imgurl),
                             height: 200,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fill,
                           ),
                         ),
                       ),
@@ -88,7 +92,6 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
     // ignore: sized_box_for_whitespace
     var _container = Container(
       height: 230,
-      //width: double.infinity,
       child: PageView.builder(
         controller: _pageController,
         itemCount: banner.length,
@@ -98,9 +101,7 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
       ),
     );
 
-    //hiện ra các chủ để trong danh mục
-    // ignore: non_constant_identifier_names
-    var containerchude = Container(
+    var sanpham = Container(
       height: 40,
       decoration: BoxDecoration(
         color: Color(0xffe59191),
@@ -117,7 +118,7 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
       margin: const EdgeInsets.fromLTRB(10, 0, 250, 0),
       child: const Center(
         child: Text(
-          'Danh Mục',
+          'Sản phẩm',
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -131,11 +132,14 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
     wrap(AsyncSnapshot abc) {
       return Wrap(
         children: List.generate(abc.data.length, (index) {
-          String link = 'http://10.0.2.2:8000/images/catagory/' +
+          String link = 'http://10.0.2.2:8000/storage/' +
               abc.data[index].hinh_anh;
           return InkWell(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (_)=>SanPham(idloaisp: abc.data[index].id)));
+             Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => PageDetail(product: abc.data[index])));
             },
             child: Card(
               color: Color(0xffe59191),
@@ -164,7 +168,7 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
                     height: 10,
                   ),
                   Text(
-                    abc.data[index].ten_loai,
+                    abc.data[index].ten_san_pham,
                     style: const TextStyle(
                       fontFamily: 'Times New Roman',
                       fontSize: 15,
@@ -182,9 +186,9 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
 
     var listView = ListView(children: [
       _container,
-      containerchude,
+      sanpham,
       Center(
-        child: FutureBuilder<List<LoaiSanPham>>(
+        child: FutureBuilder<List<Product>>(
           future: list,
           builder: (context, abc) {
             if (abc.hasData) {
@@ -196,6 +200,12 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
           },
         ),
       ),
+      Container(
+        alignment: Alignment.bottomRight,
+        child: InkWell(child: const Text('Xem tất cả >>',style: TextStyle(fontSize: 20,color:Colors.blueGrey),),onTap:  () {
+                 Navigator.push(context, MaterialPageRoute(builder: (_)=>const ProductScreen(id: 0)));
+              },)
+      )
     ]);
 
     return GestureDetector(
@@ -252,6 +262,7 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
           ],
         ),
         body: background(listView, context),
+        
         bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(

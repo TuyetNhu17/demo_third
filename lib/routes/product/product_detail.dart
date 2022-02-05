@@ -164,7 +164,7 @@ class Detail extends State<PageDetail> {
               child: Container(
                 child: CachedNetworkImage(
                   fit: BoxFit.fill,
-                  imageUrl: 'http://10.0.2.2:8000/images/product/' +
+                  imageUrl: 'http://10.0.2.2:8000/storage/' +
                       widget.product.hinh_anh,
                   placeholder: (context, url) => const Center(
                     child: CircularProgressIndicator(),

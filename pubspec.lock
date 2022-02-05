@@ -191,6 +191,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.1"
+<<<<<<< HEAD
   intl:
     dependency: "direct main"
     description:
@@ -198,6 +199,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.17.0"
+=======
+>>>>>>> d12dfcc831e76e0988afe67c6a734087098b8e2a
   js:
     dependency: transitive
     description:

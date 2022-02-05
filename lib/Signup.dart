@@ -2,12 +2,11 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:giaodien/Element/colorbutton.dart';
+import 'package:giaodien/loginScreen.dart';
 import 'Element/General.dart';
 import 'Element/Titile.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'routes/API/APIaccount.dart';
-import 'routes/models/account.dart';
 
 enum sex { nam, nu }
 sex _sex = sex.nam;
@@ -82,9 +81,9 @@ class Signup extends State<SignupSreen> {
                           Map<String, String> data = {
                             '_email': text,
                           };
-                         String? email = await checkEmail(data);
+                          String? email = await checkEmail(data);
                           print(email);
-                          if (email !=null) {
+                          if (email != null) {
                             setState(() {
                               _emailtontaiInvalid = true;
                             });
@@ -98,7 +97,8 @@ class Signup extends State<SignupSreen> {
                             labelText: "Email",
                             errorText: _emailtontaiInvalid
                                 ? 'Email đã tồn tại'
-                                :_emailInvalid?'Email không hợp lệ'
+                                : _emailInvalid
+                                    ? 'Email không hợp lệ'
                                     : null,
                             icon: Icon(Icons.email),
                             labelStyle: TextStyle(color: Colors.black),
@@ -198,7 +198,7 @@ class Signup extends State<SignupSreen> {
                               _sdtInvalid == false &&
                               _xacnhanmatkhauInvalid == false &&
                               _emailtontaiInvalid == false) {
-                              DangKiTaiKhoan();
+                            DangKiTaiKhoan();
                           }
                         },
                         child: const Text(
@@ -227,14 +227,12 @@ class Signup extends State<SignupSreen> {
     };
     var res = await postData(data, _imageFile == null ? null : _imageFile);
     if (res == 'Success') {
-      Navigator.pushNamed(context, '/second');
+      Navigator.pushReplacementNamed(context,'/login');
     } else {
       print('Fail');
     }
     print(res);
   }
-
-  Future Avatar() async {}
 
   void takePhoto() async {
     final _pickedFile = await _picker.getImage(source: ImageSource.gallery);

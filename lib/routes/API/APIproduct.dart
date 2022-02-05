@@ -71,11 +71,15 @@ Future<List<Product>> SanPhamBanChay() async {
   }
 }
 
-Future<List<Product>> laySanPhamtheoLoai(int idLoaisp) async {
-  final response =
-      await http.get(Uri.parse('http://10.0.2.2:8000/api/sanPham/$idLoaisp'));
+Future<List<Product>>fetchSearch(String query) async {
+  final response = await http.get(Uri.parse('http://10.0.2.2:8000/api/sp/ds'));
   if (response.statusCode == 200) {
-    return sanphams(response.body);
+    List products = jsonDecode(response.body);
+    return products.map<Product>((json)=>Product.fromJson(json)).where((products) {
+      final titleLower = products.ten_san_pham.toLowerCase();
+      final searchLower = query.toLowerCase();
+      return titleLower.contains(searchLower);
+    } ).toList();
   } else {
     throw Exception('No find data');
   }

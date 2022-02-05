@@ -9,6 +9,7 @@ import 'package:giaodien/routes/product/product.dart';
 import 'package:giaodien/routes/product/product_detail.dart';
 import '../models/banner.dart';
 import '../account/myhome.dart';
+import '../models/account.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -228,23 +229,14 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
                     color: Colors.pink,
                   ),
                 ]),
-            child: TextField(
-              decoration: InputDecoration(
-                enabledBorder: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                contentPadding: const EdgeInsets.only(top: 14),
-                border: const OutlineInputBorder(),
-                prefixIcon: IconButton(
-                  icon: const Icon(
-                    Icons.search,
-                  ),
-                  iconSize: 30,
-                  color: Colors.black,
-                  onPressed: () {},
-                ),
-                hintText: 'search',
-                //suffixIcon: Icons.search,
-              ),
+            child: IconButton(
+              icon: Icon(Icons.search),
+              color: Colors.black,
+              onPressed: (){
+                Navigator.pushNamed(context, '/search');
+              },
+              iconSize: 50,
+              
             ),
           ),
           actions: [

@@ -40,35 +40,27 @@ Future<String?> checkEmail(Map<String, String> dt) async {
   }
 }
 
+_setHeaderFIle() =>
+    {'Content-Type': 'application/json; charset=utf-8,image/jpg'};
 
-_setHeaderFIle() => {
-      'Content-Type': 'application/json; charset=utf-8,image/jpg';
-    print(res.body);
-    throw Exception("Fail");
-    };
-
-Future <List<Account>> login (var data  ) async {
+Future<List<Account>> login(var data) async {
   List<Account> acc = [];
   String url = "http://10.0.2.2:8000/api/login";
-   var response = await http.post(Uri.parse(url),
-   headers: _setHeader(),
-   body: jsonEncode(data));
-   if(response.statusCode == 200)
-   {
-     dynamic jsondata = json.decode(response.body);
-     dynamic data = jsondata["data"];
-     data.forEach((i){
-       acc.add(Account.fromJson(i));
-     });
-    
-     return acc;
-   }
-   else
-   {
-     print(response.body);
-     throw Exception("Fail");
-   }
-  
+  var response = await http.post(Uri.parse(url),
+      headers: _setHeader(), body: jsonEncode(data));
+  print(data);
+  if (response.statusCode == 200) {
+    dynamic jsondata = json.decode(response.body);
+    dynamic data = jsondata["data"];
+    data.forEach((i) {
+      acc.add(Account.fromJson(i));
+    });
+    print(acc.length);
+    return acc;
+  } else {
+    print(response.body);
+    throw Exception("Fail");
+  }
 }
 
 _setHeader() => {

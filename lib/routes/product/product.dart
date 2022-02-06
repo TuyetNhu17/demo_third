@@ -153,9 +153,7 @@ class _ProductScreenState extends State<ProductScreen> {
         if (i.loai_san_pham_id == widget.id) {
           sanpham.add(i);
         }
-        print(i.id);
       }
-      print(widget.id);
     }
 
     Widget cardsanpham() {

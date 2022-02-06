@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen>{
       
     };
     List<Account> res = await login(data);
-    if( res.length == 1)
+    if( res.length !=0)
     {
       Navigator.pushNamed(context, '/second');
       

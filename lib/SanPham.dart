@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:giaodien/Element/General.dart';
+import 'package:giaodien/routes/models/account.dart';
 import 'package:giaodien/routes/product/category.dart';
 import 'package:giaodien/routes/product/product_detail.dart';
 import 'routes/API/APIproduct.dart';
@@ -8,16 +9,16 @@ import 'routes/models/product.dart';
 
 class SanPham extends StatelessWidget {
   final int id;
-  const SanPham({Key? key, required this.id}) : super(key: key);
+  final List<Account> acc;
+  const SanPham({Key? key, required this.id,required this.acc}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    
     Future<List<Product>> lstSanPham;
     if (id == 1) {
       lstSanPham = SanPhamBanChay();
     } else {
-     lstSanPham = SanPhamMoi();
+      lstSanPham = SanPhamMoi();
     }
 
     Widget listSanPham() {
@@ -97,9 +98,7 @@ class SanPham extends StatelessWidget {
           body: background(listSanPham(), context),
         ));
   }
-}
-
-sanpham(AsyncSnapshot abc, BuildContext context) {
+  sanpham(AsyncSnapshot abc, BuildContext context) {
   return Wrap(
     children: List.generate(abc.data.length, (index) {
       String link = 'http://10.0.2.2:8000/storage/' + abc.data[index].hinh_anh;
@@ -108,7 +107,7 @@ sanpham(AsyncSnapshot abc, BuildContext context) {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (_) => PageDetail(product: abc.data[index])));
+                  builder: (_) => PageDetail(product: abc.data[index],acc: acc,)));
         },
         child: Card(
           color: Color(0xffe59191),
@@ -162,6 +161,9 @@ sanpham(AsyncSnapshot abc, BuildContext context) {
     }),
   );
 }
+}
+
+
 
 class CustomSearch extends StatefulWidget {
   const CustomSearch({Key? key}) : super(key: key);

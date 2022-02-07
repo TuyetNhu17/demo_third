@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:giaodien/Element/General.dart';
 import 'package:giaodien/Element/Titile.dart';
 import 'package:giaodien/Element/colorbutton.dart';
-import 'package:giaodien/Element/decor.dart';
 
 class PageSetting extends StatefulWidget {
   const PageSetting({Key? key}) : super(key: key);

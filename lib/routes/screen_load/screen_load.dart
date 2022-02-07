@@ -31,15 +31,6 @@ class _MyHomePageState extends State<ScreenLoad>
   }
 
   @override
-  // ignore: must_call_super
-  /*  void dispose() {
-    super.dispose();
-   
-    controller.dispose();
-    
-  } */
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(

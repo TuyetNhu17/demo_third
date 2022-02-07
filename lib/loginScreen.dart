@@ -24,14 +24,13 @@ class _LoginScreenState extends State<LoginScreen>{
   Future Login() async
   {
     Map<String ,String > data ={
-      '_ten_dang_nhap' : userController.text,
+      '_email' : userController.text,
       '_mat_khau'  : passController.text,
-      
     };
     List<Account> res = await login(data);
     if( res.length !=0)
     {
-      Navigator.pushNamed(context, '/second');
+      Navigator.push(context, MaterialPageRoute(builder: (_)=>Home(acc:res) ));
       
     }
     else

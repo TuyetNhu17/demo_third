@@ -1,11 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-List<int> text = [1, 2];
+import 'package:giaodien/routes/API/APIgiohanng.dart';
+import 'package:giaodien/routes/models/account.dart';
+import 'package:giaodien/routes/models/giohang.dart';
+import 'package:provider/provider.dart';
 
 class CartScreen extends StatefulWidget {
-  const CartScreen({Key? key}) : super(key: key);
-
+  final List<Account> acc;
+  const CartScreen({Key? key, required this.acc}) : super(key: key);
   @override
   _CartScreenState createState() => _CartScreenState();
 }
@@ -25,7 +28,6 @@ Widget buildBtn() {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30.0),
         gradient: const LinearGradient(
-          // Where the linear gradient begins and ends
           begin: Alignment.topLeft,
           end: Alignment.centerRight,
           colors: [
@@ -92,7 +94,7 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget quatity() {
+  Widget quatity(String a) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -111,7 +113,7 @@ class _CartScreenState extends State<CartScreen> {
         ),
         Padding(padding: EdgeInsets.symmetric(horizontal: 5.0)),
         Text(
-          '1',
+          a,
           style: TextStyle(
             fontSize: 18.0,
             fontWeight: FontWeight.bold,
@@ -135,79 +137,96 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget content() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-      ),
-      child: Column(children: [
-        buildCheckbox(notification_second),
-        Padding(padding: EdgeInsets.only(bottom: 0)),
-        Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-          Image.asset(
-            'images/hoa_cuoi/baby.jpg',
-            width: 100,
-            height: 100,
+  Widget content(List<GioHang> giohang) {
+    return Wrap(
+        children: List.generate(giohang.length, (index) {
+      String link =
+          'http://10.0.2.2:8000/storage/' + giohang[index].hinh_anh;
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: Container(
+          
+          decoration: BoxDecoration(
+            color: Colors.white,
           ),
-          Padding(padding: EdgeInsets.symmetric(horizontal: 3.0)),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                constraints: BoxConstraints(maxWidth: 250),
-                child: Text(
-                  'Hoa hồng xinh tặng người yêuuuuuuuuu',
-                  overflow: TextOverflow.ellipsis,
-                  softWrap: false,
-                  maxLines: 1,
-                  style: TextStyle(fontSize: 18),
+          child: Column(children: [
+            buildCheckbox(notification_second),
+            Padding(padding: EdgeInsets.only(bottom: 0)),
+            Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+              SizedBox(
+                height: 100,
+                width: 100,
+                child: CachedNetworkImage(
+                  fit: BoxFit.fill,
+                  imageUrl: link,
+                  placeholder: (context, url) => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    color: Colors.black12,
+                  ),
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
-              quatity(),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                '50.000d',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.orange,
-                ),
-              ),
-            ],
-          )
-        ]),
-        SizedBox(
-          height: 10,
-        ),
-        Container(
-          alignment: Alignment.bottomRight,
-          padding: EdgeInsets.all(5),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30.0),
-              gradient: const LinearGradient(
-                // Where the linear gradient begins and ends
-                begin: Alignment.topLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  Color(0xc6ff7f50),
-                  Color(0x40ee6a50),
+              Padding(padding: EdgeInsets.symmetric(horizontal: 3.0)),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    constraints: BoxConstraints(maxWidth: 250),
+                    child: Text(
+                      giohang[index].ten_san_pham,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: false,
+                      maxLines: 1,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  quatity(giohang[index].so_luong_mua.toString()),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    giohang[index].don_gia.toString(),
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.orange,
+                    ),
+                  ),
                 ],
+              )
+            ]),
+            Container(
+              alignment: Alignment.bottomRight,
+              padding: EdgeInsets.all(5),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30.0),
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      Color(0xc6ff7f50),
+                      Color(0x40ee6a50),
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
-        )
-      ]),
-    );
+          ]),
+        ),
+      );
+    }));
   }
 
   @override
   Widget build(BuildContext context) {
+    var list = Provider.of<LayGioHangProvider>(context, listen: false);
+    list.laygiohang(widget.acc[0].id);
+    List<GioHang> giohang = list.giohang;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: DefaultTabController(
@@ -249,15 +268,20 @@ class _CartScreenState extends State<CartScreen> {
                         ListView(
                           children: [
                             buildGroupCheckbox(notication_first),
-                            for (var i in text)
-                              Column(
-                                children: [
-                                  content(),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                ],
-                              ),
+                            Column(
+                              children: [
+                                FutureBuilder(
+                                  future: list.laygiohang(widget.acc[0].id),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot abc) {
+                                      return content(giohang);
+                                  },
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                         Icon(Icons.catching_pokemon),
@@ -270,6 +294,7 @@ class _CartScreenState extends State<CartScreen> {
                     margin: EdgeInsets.only(top: 485),
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
+                      color: Colors.red,
                         border: Border(
                             top: BorderSide(color: Colors.black45, width: 1))),
                     child: Row(
@@ -281,13 +306,15 @@ class _CartScreenState extends State<CartScreen> {
                           style: TextStyle(fontSize: 16, color: Colors.black),
                           textAlign: TextAlign.start,
                         ),
-                        Padding(padding: EdgeInsets.symmetric(horizontal: 20.0)),
+                        Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0)),
                         Text(
                           '123,000 vnđ',
                           style: TextStyle(fontSize: 16, color: Colors.black),
                           textAlign: TextAlign.start,
                         ),
-                        Padding(padding: EdgeInsets.symmetric(horizontal: 20.0)),
+                        Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0)),
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30.0),

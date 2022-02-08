@@ -53,6 +53,7 @@ class _SearchProduct extends State<SearchProduct> {
         appBar: AppBar(
           title: Text("Search"),
           centerTitle: true,
+          backgroundColor: Color(0xffe59191),
         ),
         body: Column(
           children: <Widget>[

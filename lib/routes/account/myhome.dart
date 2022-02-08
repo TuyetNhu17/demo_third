@@ -2,9 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:giaodien/Element/General.dart';
 import 'package:giaodien/routes/home/home.dart';
+import '../models/account.dart';
+import 'package:giaodien/setting_account.dart';
 
 class MyHome extends StatefulWidget {
-  const MyHome({Key? key}) : super(key: key);
+  final List<Account> account;
+  const MyHome({Key? key, required this.account}) : super(key: key);
   @override
   MyHomePage createState() => MyHomePage();
 }
@@ -174,13 +177,13 @@ class MyHomePage extends State<MyHome> {
             PageRouteBuilder(pageBuilder: (context, animation, secon) {
               if (index == 0) {
                 
-                return const Home();
+                return Home(account: widget.account,);
               }
               if (index == 1) {
                 
-                return const MyHome();
+                return ThietLapTK(account: widget.account,);
               }
-              return const MyHome();
+              return ThietLapTK(account: widget.account,);
             }),
           );
         },

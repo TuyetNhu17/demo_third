@@ -10,15 +10,18 @@ import 'package:giaodien/routes/product/product_detail.dart';
 import '../models/banner.dart';
 import '../account/myhome.dart';
 import '../models/account.dart';
+import 'package:giaodien/setting_account.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+   final List<Account> account;
+  const Home({Key? key, required this.account}) : super(key: key);
   @override
   HomePage createState() => HomePage();
 }
 
 class HomePage extends State<Home> with SingleTickerProviderStateMixin {
   Future<List<Product>> list = SanPhamTrangChu();
+  
 
   late PageController _pageController;
   @override
@@ -219,23 +222,14 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
           centerTitle: false,
           automaticallyImplyLeading: false,
           title: Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(30),
-                boxShadow: const [
-                  BoxShadow(
-                    offset: Offset(0, 10),
-                    blurRadius: 50,
-                    color: Colors.pink,
-                  ),
-                ]),
             child: IconButton(
+              
               icon: Icon(Icons.search),
-              color: Colors.black,
+              color: Colors.white,
               onPressed: (){
                 Navigator.pushNamed(context, '/search');
               },
-              iconSize: 50,
+              iconSize: 30,
               
             ),
           ),
@@ -261,7 +255,10 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
               icon: Icon(Icons.home),
               label: 'Home',
             ),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Tôi'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Tôi'
+            ),
           ],
           backgroundColor: Color(0xffe59191),
           selectedItemColor: Colors.white,
@@ -271,12 +268,12 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
               context,
               PageRouteBuilder(pageBuilder: (context, animation, secon) {
                 if (index == 0) {
-                  return const Home();
+                  return Home(account: widget.account,);
                 }
                 if (index == 1) {
-                  return const MyHome();
+                  return ThietLapTK(account: widget.account,);
                 }
-                return const MyHome();
+               return ThietLapTK(account: widget.account,);
               }),
             );
           },

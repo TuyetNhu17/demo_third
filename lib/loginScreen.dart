@@ -18,20 +18,25 @@ class LoginScreen extends StatefulWidget{
 class _LoginScreenState extends State<LoginScreen>{
 
   bool _isLoading= false;
-  TextEditingController userController = new TextEditingController();
+  TextEditingController emailController = new TextEditingController();
   TextEditingController passController = new TextEditingController();
+   var _emailInvalid = false;
+   var _emailErr = "Email không hợp lệ";
+
+   var _passInvalid = false;
+   var _passErr = "Mật khẩu không hợp lệ";
 
   Future Login() async
   {
     Map<String ,String > data ={
-      '_ten_dang_nhap' : userController.text,
+      '_email' : emailController.text,
       '_mat_khau'  : passController.text,
       
     };
     List<Account> res = await login(data);
     if( res.length !=0)
     {
-      Navigator.pushNamed(context, '/second');
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>Home(account: res)));
       
     }
     else
@@ -45,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen>{
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Tên đăng nhập',
+          'Email',
           style: TextStyle(
             color: Colors.white,
             fontSize: 16,
@@ -68,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen>{
           ),
           height: 60,
           child: TextField(
-            controller: userController,
+            controller: emailController,
             style: TextStyle(
               color: Colors.black87,
             ),
@@ -79,9 +84,16 @@ class _LoginScreenState extends State<LoginScreen>{
                 Icons.account_circle,
                 color: Color(0xffe59191),
               ),
-              hintText: 'Tên đăng nhập',
+              hintText: 'Email',    
               hintStyle: TextStyle(
                 color: Colors.black38,
+              ),
+              errorText: _emailInvalid ? _emailErr : null,
+              errorStyle: TextStyle(
+                color: Colors.red,
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+                fontStyle: FontStyle.italic,
               ),
             ),
           ),
@@ -131,6 +143,13 @@ class _LoginScreenState extends State<LoginScreen>{
                 color: Color(0xffe59191),
               ),
               hintText: 'Mật khẩu',
+              errorText: _passInvalid ? _passErr : null,
+              errorStyle: TextStyle(
+                color: Colors.red,
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+                fontStyle: FontStyle.italic,
+              ),
               hintStyle: TextStyle(
                 color: Colors.black38,
               ),
@@ -165,6 +184,7 @@ class _LoginScreenState extends State<LoginScreen>{
       child: RaisedButton(
         elevation: 5,
         onPressed: () {
+          Check();
           Login();
         },
         padding: EdgeInsets.all(15),
@@ -268,5 +288,27 @@ class _LoginScreenState extends State<LoginScreen>{
         ), 
       ),
     );
+  }
+
+  void Check(){
+    setState(() {
+    if(emailController.text.length < 8 )
+    {
+      _emailInvalid = true;
+    }
+    else
+    {
+      _emailInvalid = false;
+    }
+
+    if(passController.text.length < 5 )
+    {
+      _passInvalid = true;
+    }
+    else
+    {
+      _passInvalid = false;
+    }
+  });
   }
 }

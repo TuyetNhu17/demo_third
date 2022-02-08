@@ -20,6 +20,7 @@ import 'package:giaodien/loginScreen.dart';
 import 'package:giaodien/method_pay.dart';
 import 'package:giaodien/pay.dart';
 import 'package:giaodien/shopping_address.dart';
+import 'package:giaodien/setting_account.dart';
 
 void main() {
  runApp(MultiProvider(providers:[
@@ -38,8 +39,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const ScreenLoad(),
-        '/second': (context) => const Home(),
-        '/myhome': (context) => const MyHome(),
+        '/second': (context) => const Home(account: [],),
+        '/myhome': (context) => const MyHome(account: [],),
         '/setting': (context) => const PageSetting(),
         '/profile': (context) => const PageProFile(),
         '/signup': (context) => const SignupSreen(),
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
         '/shopping_address': (context) => ShoppingAddressScreen(),
         '/findproduct':(context)=> CustomSearch(),
         '/search': (context) => SearchProduct(),
+        'thietlap': (context) => ThietLapTK(account: [],),
       },
       debugShowCheckedModeBanner: false,
     );

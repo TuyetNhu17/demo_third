@@ -5,7 +5,6 @@ import '../models/product.dart';
 
 List<Product> sanphams(String response) {
   var list = jsonDecode(response);
-
   return list.map<Product>((model) => Product.fromJson(model)).toList();
 }
 

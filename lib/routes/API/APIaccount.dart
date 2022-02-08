@@ -6,7 +6,7 @@ import '../models/account.dart';
 
 const String _url = 'http://10.0.2.2:8000/api/';
 Future postData(Map<String, String> data, PickedFile? image) async {
-  var url = 'http://10.0.2.2:8000/api/khachHang/';
+  var url = _url+'khachHang/';
   var request = http.MultipartRequest('POST', Uri.parse(url));
   request.headers.addAll(_setHeaderFIle());
   request.fields.addAll(data);
@@ -25,7 +25,7 @@ Future postData(Map<String, String> data, PickedFile? image) async {
 
 Future<String?> checkEmail(Map<String, String> dt) async {
   String? result;
-  var url = 'http://10.0.2.2:8000/api/khachhang/checkEmail';
+  var url = _url+'khachhang/checkEmail';
   var request =
       await http.post(Uri.parse(url), body: dt, headers: _setHeader());
   print(request.statusCode);
@@ -33,7 +33,6 @@ Future<String?> checkEmail(Map<String, String> dt) async {
     dynamic jsondata = json.decode(request.body);
     dynamic data = jsondata['data'];
     result = data;
-    print(data);
     return result;
   } else {
     throw Exception('hcnb');
@@ -45,20 +44,17 @@ _setHeaderFIle() =>
 
 Future<List<Account>> login(var data) async {
   List<Account> acc = [];
-  String url = "http://10.0.2.2:8000/api/login";
+  String url = _url+'login';
   var response = await http.post(Uri.parse(url),
       headers: _setHeader(), body: jsonEncode(data));
-  print(data);
   if (response.statusCode == 200) {
     dynamic jsondata = json.decode(response.body);
     dynamic data = jsondata["data"];
     data.forEach((i) {
       acc.add(Account.fromJson(i));
     });
-    print(acc.length);
     return acc;
   } else {
-    print(response.body);
     throw Exception("Fail");
   }
 }

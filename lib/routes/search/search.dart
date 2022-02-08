@@ -1,14 +1,14 @@
 import 'dart:async';
-
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:giaodien/routes/models/account.dart';
 import 'package:giaodien/routes/product/product_detail.dart';
-
 import '../API/APIproduct.dart';
 import '../models/product.dart';
 import '../search/search_widget.dart';
 import 'package:flutter/material.dart';
 
 class SearchProduct extends StatefulWidget {
+  final List<Account> account;
+  const SearchProduct({Key? key, required this.account}) : super(key: key);
   @override
   _SearchProduct createState() => _SearchProduct();
 }
@@ -92,8 +92,11 @@ class _SearchProduct extends State<SearchProduct> {
   Widget buildProduct(Product product) => ListTile(
         title: Text(product.ten_san_pham),
         subtitle: Text(product.mo_ta),
-        onTap: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => PageDetail(product: product)));
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => PageDetail(product: product,acc: widget.account,)));
         },
       );
 }

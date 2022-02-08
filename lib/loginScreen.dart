@@ -31,7 +31,6 @@ class _LoginScreenState extends State<LoginScreen>{
     Map<String ,String > data ={
       '_email' : emailController.text,
       '_mat_khau'  : passController.text,
-      
     };
     List<Account> res = await login(data);
     if( res.length !=0)

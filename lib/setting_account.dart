@@ -94,24 +94,6 @@ class _ThietLapTKState extends State<ThietLapTK> {
             padding: EdgeInsets.all(8),
             child: Row(
               children: <Widget>[
-                Text("Tên đăng nhập"),
-                Spacer(),
-                Text(widget.account[0].ten_dang_nhap),
-                IconButton(
-                  onPressed: (){}, 
-                  icon: Icon(Icons.arrow_forward_ios),
-                ),
-              ],
-            ),
-          ),
-        ),
-        SizedBox(height: 20),
-        InkWell(
-          onTap: () {},
-          child: Padding(
-            padding: EdgeInsets.all(8),
-            child: Row(
-              children: <Widget>[
                 Text("Số điện thoại"),
                 Spacer(),
                 Text(widget.account[0].so_dien_thoai),

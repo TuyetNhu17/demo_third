@@ -2,19 +2,64 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:giaodien/Element/General.dart';
 import 'package:giaodien/Element/colorbutton.dart';
+import 'package:giaodien/routes/API/APIgiohanng.dart';
+import 'package:giaodien/routes/models/account.dart';
 import '../models/product.dart';
 
 class PageDetail extends StatefulWidget {
   final Product product;
+  final List<Account> acc;
 
-  // ignore: use_key_in_widget_constructors
-  const PageDetail({required this.product});
+  PageDetail({required this.product, required this.acc});
 
   @override
   Detail createState() => Detail();
 }
 
 class Detail extends State<PageDetail> {
+  themGioHang() async {
+    Map<String, String> data = {
+      '_idsanpham': widget.product.id.toString(),
+      '_idkhachhang': widget.acc[0].id.toString(),
+      '_soluongmua': quality.toString()
+    };
+    var res = await themgiohang(data);
+    thongbao(res);
+  }
+
+  thongbao(mess) {
+    var a;
+    IconData icon;
+    if (mess == 'Success') {
+      a = 'Đã thêm vào giỏ';
+      icon = Icons.task_alt;
+    } else {
+      a = 'Vượt quá số lượng tồn kho';
+      icon = Icons.sentiment_dissatisfied;
+    }
+    return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: RichText(
+                textAlign: TextAlign.center,
+                  text: WidgetSpan(
+                child: Icon(
+                  icon,
+                  size: 25,
+                ),
+              )),
+              content: Text(a),
+              backgroundColor: Colors.white,
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Xong'))
+              ],
+            ));
+  }
+
   var quality = 1;
 
   var boxShadow2 = BoxShadow(
@@ -164,8 +209,8 @@ class Detail extends State<PageDetail> {
               child: Container(
                 child: CachedNetworkImage(
                   fit: BoxFit.fill,
-                  imageUrl: 'http://10.0.2.2:8000/storage/' +
-                      widget.product.hinh_anh,
+                  imageUrl:
+                      'http://10.0.2.2:8000/storage/' + widget.product.hinh_anh,
                   placeholder: (context, url) => const Center(
                     child: CircularProgressIndicator(),
                   ),
@@ -209,7 +254,7 @@ class Detail extends State<PageDetail> {
               Flexible(
                   child: Container(
                 decoration: BoxDecoration(
-                  color:Colors.pink[100] ,
+                    color: Colors.pink[100],
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [boxShadow2]),
                 padding: const EdgeInsets.all(10),
@@ -258,7 +303,9 @@ class Detail extends State<PageDetail> {
                   BoxDecoration(borderRadius: BorderRadius.circular(70)),
               child: colorbutton(
                 FlatButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    themGioHang();
+                  },
                   child: const Text(
                     'Mua ngay',
                     style: TextStyle(

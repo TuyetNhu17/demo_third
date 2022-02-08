@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:giaodien/Element/General.dart';
 import 'package:giaodien/SanPham.dart';
+import 'package:giaodien/cart.dart';
+import 'package:giaodien/routes/API/APIgiohanng.dart';
 import 'package:giaodien/routes/API/APIproduct.dart';
 import 'package:giaodien/routes/models/product.dart';
 import 'package:giaodien/routes/product/product.dart';
 import 'package:giaodien/routes/product/product_detail.dart';
+import 'package:provider/provider.dart';
 import '../models/banner.dart';
 import '../account/myhome.dart';
 import '../models/account.dart';
@@ -70,8 +73,12 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
                     ),
                     child: Center(
                       child: InkWell(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (_)=>SanPham(id: banner[index].id)));
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) =>
+                                      SanPham(id: banner[index].id,acc: widget.account,)));
                         },
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
@@ -93,7 +100,10 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: sized_box_for_whitespace
+    var sanphamapi = Provider.of<LaySanPhamProvider>(context, listen: false);
+    sanphamapi.LaySanPham();
+    var giohangapi = Provider.of<LayGioHangProvider>(context, listen: false);
+   giohangapi.laygiohang(widget.account[0].id);
     var _container = Container(
       height: 230,
       child: PageView.builder(
@@ -136,14 +146,14 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
     wrap(AsyncSnapshot abc) {
       return Wrap(
         children: List.generate(abc.data.length, (index) {
-          String link = 'http://10.0.2.2:8000/storage/' +
-              abc.data[index].hinh_anh;
+          String link =
+              'http://10.0.2.2:8000/storage/' + abc.data[index].hinh_anh;
           return InkWell(
             onTap: () {
-             Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => PageDetail(product: abc.data[index])));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => PageDetail(product: abc.data[index],acc: widget.account,)));
             },
             child: Card(
               color: Color(0xffe59191),
@@ -205,11 +215,19 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
         ),
       ),
       Container(
-        alignment: Alignment.bottomRight,
-        child: InkWell(child: const Text('Xem tất cả >>',style: TextStyle(fontSize: 20,color:Colors.blueGrey),),onTap:  () {
-                 Navigator.push(context, MaterialPageRoute(builder: (_)=>const ProductScreen(id: 0)));
-              },)
-      )
+          alignment: Alignment.bottomRight,
+          child: InkWell(
+            child: const Text(
+              'Xem tất cả >>',
+              style: TextStyle(fontSize: 20, color: Colors.blueGrey),
+            ),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => ProductScreen(id: 0,acc: widget.account,)));
+            },
+          ))
     ]);
 
     return GestureDetector(
@@ -241,14 +259,15 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
               iconSize: 30,
               color: Colors.white,
               splashColor: Colors.pink.shade200,
-              onPressed: () {
-                Navigator.pushNamed(context, '/cart');
+              onPressed: () { Navigator.push(
+                  context,
+                MaterialPageRoute(
+                      builder: (_) => CartScreen(acc: widget.account,)));
               },
             ),
           ],
         ),
         body: background(listView, context),
-        
         bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(

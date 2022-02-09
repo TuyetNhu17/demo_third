@@ -30,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen>{
     List<Account> res = await login(data);
     if( res.length !=0)
     {
-      Navigator.push(context, MaterialPageRoute(builder: (_)=>Home(acc:res) ));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>Home(acc:res) ));
       
     }
     else

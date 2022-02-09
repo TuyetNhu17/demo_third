@@ -35,4 +35,18 @@ class Product {
         'hinh_anh': hinh_anh,
         'loai_san_pham_id': loai_san_pham_id,
       };
+      int? compareTo(other) {
+    if (this.don_gia < other.don_gia) {
+      return -1;
+    }
+
+    if (this.don_gia > other.don_gia) {
+      return 1;
+    }
+
+    if (this.don_gia == other.don_gia) {
+      return 0;
+    }
+    return null;
+  }
 }

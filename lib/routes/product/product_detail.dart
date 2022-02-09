@@ -4,6 +4,7 @@ import 'package:giaodien/Element/General.dart';
 import 'package:giaodien/Element/colorbutton.dart';
 import 'package:giaodien/routes/API/APIgiohanng.dart';
 import 'package:giaodien/routes/models/account.dart';
+import 'package:provider/provider.dart';
 import '../models/product.dart';
 
 class PageDetail extends StatefulWidget {
@@ -17,6 +18,7 @@ class PageDetail extends StatefulWidget {
 }
 
 class Detail extends State<PageDetail> {
+  
   themGioHang() async {
     Map<String, String> data = {
       '_idsanpham': widget.product.id.toString(),
@@ -24,6 +26,8 @@ class Detail extends State<PageDetail> {
       '_soluongmua': quality.toString()
     };
     var res = await themgiohang(data);
+    var giohangapi = Provider.of<LayGioHangProvider>(context, listen: false);
+   giohangapi.laygiohang(widget.acc[0].id);
     thongbao(res);
   }
 
@@ -37,6 +41,7 @@ class Detail extends State<PageDetail> {
       a = 'Vượt quá số lượng tồn kho';
       icon = Icons.sentiment_dissatisfied;
     }
+    
     return showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -278,24 +283,9 @@ class Detail extends State<PageDetail> {
           title: const Text('Chi tiết sản phẩm'),
         ),
         body: background(listView, context),
-        // ignore: avoid_unnecessary_containers
         bottomSheet: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Container(
-              height: 50,
-              width: 103,
-              decoration: const BoxDecoration(),
-              child: colorbutton(
-                FlatButton(
-                    onPressed: () {},
-                    child: const Icon(
-                      Icons.shopping_cart,
-                      size: 30,
-                      color: Colors.white,
-                    )),
-              ),
-            ),
             Container(
               height: 50,
               width: 308,
@@ -307,7 +297,7 @@ class Detail extends State<PageDetail> {
                     themGioHang();
                   },
                   child: const Text(
-                    'Mua ngay',
+                    'Thêm vào giỏ hàng',
                     style: TextStyle(
                         color: Colors.white,
                         fontFamily: 'Times New Roman',

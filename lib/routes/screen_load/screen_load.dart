@@ -55,7 +55,7 @@ class _MyHomePageState extends State<ScreenLoad>
             children: [
               Padding(
                 padding: const EdgeInsets.all(0),
-                child: Image.asset('images/logo.jpg'),
+                child: Image.asset('images/logo.png',width: 200,),
               ),
               const SizedBox(
                 height: 30,

@@ -145,7 +145,6 @@ class _CartScreenState extends State<CartScreen> {
       return Padding(
         padding: const EdgeInsets.only(bottom: 10),
         child: Container(
-          
           decoration: BoxDecoration(
             color: Colors.white,
           ),

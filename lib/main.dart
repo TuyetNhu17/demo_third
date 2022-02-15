@@ -5,8 +5,11 @@ import 'package:giaodien/Signup.dart';
 import 'package:giaodien/Review.dart';
 import 'package:giaodien/ReviewForm.dart';
 import 'package:giaodien/routes/API/APIproduct.dart';
+import 'package:giaodien/routes/account/myhome.dart';
 import 'package:giaodien/routes/account/profile.dart';
 import 'package:giaodien/routes/account/setting.dart';
+import 'package:giaodien/routes/home/home.dart';
+import 'package:giaodien/routes/search/search.dart';
 import 'package:provider/provider.dart';
 import 'package:giaodien/routes/screen_load/screen_load.dart';
 import 'ForgotPass.dart';
@@ -16,6 +19,7 @@ import 'package:giaodien/loginScreen.dart';
 import 'package:giaodien/method_pay.dart';
 import 'package:giaodien/pay.dart';
 import 'package:giaodien/shopping_address.dart';
+import 'package:giaodien/setting_account.dart';
 import 'routes/API/APIgiohanng.dart';
 
 void main() {
@@ -36,6 +40,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const ScreenLoad(),
+        '/second': (context) => const Home(account: [],),
+        '/myhome': (context) => const MyHome(account: [],),
         '/setting': (context) => const PageSetting(),
         '/profile': (context) => const PageProFile(),
         '/signup': (context) => const SignupSreen(),
@@ -50,6 +56,8 @@ class MyApp extends StatelessWidget {
         '/pay': (context) => PayScreen(),
         '/shopping_address': (context) => ShoppingAddressScreen(),
         '/findproduct':(context)=> CustomSearch(),
+        '/search': (context) =>  SearchProduct(account: [],),
+        'thietlap': (context) => ThietLapTK(account: [],),
       },
       debugShowCheckedModeBanner: false,
     );

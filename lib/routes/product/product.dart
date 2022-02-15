@@ -135,7 +135,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       context,
                       MaterialPageRoute(
                           builder: (_) => Home(
-                                acc: widget.acc,
+                                account: widget.acc,
                               )));
                 }),
             backgroundColor: Color(0xffe59191),

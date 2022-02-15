@@ -11,18 +11,19 @@ import 'package:giaodien/routes/product/product.dart';
 import 'package:giaodien/routes/product/product_detail.dart';
 import 'package:provider/provider.dart';
 import '../models/banner.dart';
-import '../account/myhome.dart';
 import '../models/account.dart';
+import 'package:giaodien/setting_account.dart';
 
 class Home extends StatefulWidget {
-  final List<Account> acc;
-  const Home({Key? key, required this.acc}) : super(key: key);
+  final List<Account> account;
+  const Home({Key? key, required this.account}) : super(key: key);
   @override
   HomePage createState() => HomePage();
 }
 
 class HomePage extends State<Home> with SingleTickerProviderStateMixin {
   Future<List<Product>> list = SanPhamTrangChu();
+  
 
   late PageController _pageController;
   @override
@@ -76,7 +77,7 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
                               context,
                               MaterialPageRoute(
                                   builder: (_) =>
-                                      SanPham(id: banner[index].id,acc: widget.acc,)));
+                                      SanPham(id: banner[index].id,acc: widget.account,)));
                         },
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
@@ -101,7 +102,7 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
     var sanphamapi = Provider.of<LaySanPhamProvider>(context, listen: false);
     sanphamapi.LaySanPham();
     var giohangapi = Provider.of<LayGioHangProvider>(context, listen: false);
-   giohangapi.laygiohang(widget.acc[0].id);
+   giohangapi.laygiohang(widget.account[0].id);
     var _container = Container(
       height: 230,
       child: PageView.builder(
@@ -151,7 +152,7 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (_) => PageDetail(product: abc.data[index],acc: widget.acc,)));
+                      builder: (_) => PageDetail(product: abc.data[index],acc: widget.account,)));
             },
             child: Card(
               color: Color(0xffe59191),
@@ -223,7 +224,7 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (_) => ProductScreen(id: 0,acc: widget.acc,)));
+                      builder: (_) => ProductScreen(id: 0,acc: widget.account,)));
             },
           ))
     ]);
@@ -238,23 +239,15 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
           centerTitle: false,
           automaticallyImplyLeading: false,
           title: Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(30),
-                boxShadow: const [
-                  BoxShadow(
-                    offset: Offset(0, 10),
-                    blurRadius: 50,
-                    color: Colors.pink,
-                  ),
-                ]),
             child: IconButton(
+              
               icon: Icon(Icons.search),
-              color: Colors.black,
-              onPressed: () {
+              color: Colors.white,
+              onPressed: (){
                 Navigator.pushNamed(context, '/search');
               },
-              iconSize: 50,
+              iconSize: 30,
+              
             ),
           ),
           actions: [
@@ -268,7 +261,7 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
               onPressed: () { Navigator.push(
                   context,
                 MaterialPageRoute(
-                      builder: (_) => CartScreen(acc: widget.acc,)));
+                      builder: (_) => CartScreen(acc: widget.account,)));
               },
             ),
           ],
@@ -280,7 +273,10 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
               icon: Icon(Icons.home),
               label: 'Home',
             ),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Tôi'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Tôi'
+            ),
           ],
           backgroundColor: Color(0xffe59191),
           selectedItemColor: Colors.white,
@@ -290,12 +286,12 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
               context,
               PageRouteBuilder(pageBuilder: (context, animation, secon) {
                 if (index == 0) {
-                  return Home(acc: widget.acc);
+                  return Home(account: widget.account,);
                 }
                 if (index == 1) {
-                  return MyHome(acc: widget.acc);
+                  return ThietLapTK(account: widget.account,);
                 }
-                return MyHome(acc: widget.acc);
+               return ThietLapTK(account: widget.account,);
               }),
             );
           },

@@ -41,6 +41,7 @@ class drawerWidget extends StatelessWidget {
   Widget loaisanpham(AsyncSnapshot abc, BuildContext context) {
     return Wrap(
         children: List.generate(abc.data.length, (index) {
+          print(abc.data.length);
       return ListTile(
         onTap: () {
           Navigator.push(

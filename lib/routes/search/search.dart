@@ -7,8 +7,8 @@ import '../search/search_widget.dart';
 import 'package:flutter/material.dart';
 
 class SearchProduct extends StatefulWidget {
-  final List<Account> acc;
-  const SearchProduct({Key? key, required this.acc}) : super(key: key);
+  final List<Account> account;
+  const SearchProduct({Key? key, required this.account}) : super(key: key);
   @override
   _SearchProduct createState() => _SearchProduct();
 }
@@ -53,6 +53,7 @@ class _SearchProduct extends State<SearchProduct> {
         appBar: AppBar(
           title: Text("Search"),
           centerTitle: true,
+          backgroundColor: Color(0xffe59191),
         ),
         body: Column(
           children: <Widget>[
@@ -95,7 +96,7 @@ class _SearchProduct extends State<SearchProduct> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => PageDetail(product: product,acc: widget.acc,)));
+                  builder: (context) => PageDetail(product: product,acc: widget.account,)));
         },
       );
 }

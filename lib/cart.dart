@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:giaodien/Element/General.dart';
+import 'package:giaodien/pay.dart';
 import 'package:giaodien/routes/API/APIgiohanng.dart';
 import 'package:giaodien/routes/models/account.dart';
 import 'package:giaodien/routes/models/giohang.dart';
@@ -14,53 +15,33 @@ class CartScreen extends StatefulWidget {
   _CartScreenState createState() => _CartScreenState();
 }
 
-Widget buildBtn() {
-  return Container(
-    alignment: Alignment.bottomRight,
-    padding: EdgeInsets.all(5),
-    child: Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30.0),
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.centerRight,
-          colors: [
-            Color(0xc6ff7f50),
-            Color(0x40ee6a50),
-          ],
-        ),
-      ),
-      child: FlatButton(
-        child: const Text(
-          'Đặt hàng',
-          style: TextStyle(
-            fontSize: 16.0,
-            fontFamily: 'Righteous',
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        textColor: Colors.black87,
-        color: Colors.transparent,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-        onPressed: () => print('Đặt hàng'),
-      ),
-    ),
-  );
-}
-
 class _CartScreenState extends State<CartScreen> {
 
   int _quatity = 1;
   Widget quatity(String a) {
-    return Row(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+      children: <Widget> [
         CartCounter(),
       ],
     );
   }
 
+  SizedBox buildOutlineButton({required IconData icon, required Function() press}){
+    return SizedBox(
+          width: 40,
+          height: 32,
+          child: OutlineButton(
+            padding: EdgeInsets.zero,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(13),
+            ),
+            onPressed: press,
+            child: Icon(icon),
+          ),
+        );
+  }
+  
   Widget content(List<GioHang> giohang) {
     return Wrap(
         children: List.generate(giohang.length, (index) {
@@ -156,6 +137,15 @@ class _CartScreenState extends State<CartScreen> {
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: Color(0xffe59191),
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+              ),
+              onPressed: (){
+                Navigator.pop(context);
+              },
+            ),
             bottom: TabBar(
               indicatorColor: Colors.white,
               tabs: [
@@ -238,7 +228,7 @@ class _CartScreenState extends State<CartScreen> {
             const SizedBox(
               width: 40,
             ),
-            ElevatedButton(onPressed: () => Navigator.pushNamed(context, '/pay'),
+            ElevatedButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>PayScreen(acc: widget.acc))),
             child: const Text("Thanh Toán"),
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(Color(0xffe59191)),

@@ -55,7 +55,6 @@ Widget background1(TabBarView lb, context) {
         ]),
       ));
 }
-
 class CartCounter extends StatefulWidget{
   const CartCounter({Key? key}) : super(key: key);
 

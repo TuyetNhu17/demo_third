@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
         '/invoicedetail': (context) => const InvoiceDetail(),
         '/login': (context) => LoginScreen(),
         '/method_pay': (context) =>  MethodPayScreen(),
-        '/pay': (context) => PayScreen(),
+        '/pay': (context) => PayScreen(acc: [],),
         '/shopping_address': (context) => ShoppingAddressScreen(),
         '/findproduct':(context)=> CustomSearch(),
         '/search': (context) =>  SearchProduct(account: [],),

@@ -5,10 +5,7 @@ import 'routes/models/account.dart';
 class ThietLapTK extends StatefulWidget {
   final List<Account> account;
   const ThietLapTK({Key? key, required this.account}) : super(key: key);
-  
-
   @override
-  
   State<ThietLapTK> createState() => _ThietLapTKState();
 }
 

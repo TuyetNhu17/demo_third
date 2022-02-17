@@ -40,6 +40,7 @@ class _LoginScreenState extends State<LoginScreen>{
     }
     else
     {
+      print(res);
       print("Khong thanh cong");
     }
   }

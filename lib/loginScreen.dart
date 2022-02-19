@@ -21,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen>{
   TextEditingController emailController = new TextEditingController();
   TextEditingController passController = new TextEditingController();
    var _emailInvalid = false;
-   var _emailErr = "Email không hợp lệ";
+   var _emailErr = "Tài khoản không hợp lệ";
 
    var _passInvalid = false;
    var _passErr = "Mật khẩu không hợp lệ";
@@ -35,15 +35,36 @@ class _LoginScreenState extends State<LoginScreen>{
     List<Account> res = await login(data);
     if( res.length !=0)
     {
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>Home(account: res)));
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Home(account: res)),(route)=>false);
       
     }
     else
     {
-      print(res);
+      show();
       print("Khong thanh cong");
     }
   }
+
+    show(){
+      return showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text('Đăng nhập không thành công',style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,fontSize: 15),
+        textAlign: TextAlign.center,),
+        content: Image.asset('images/pic.gif',width: 350, height: 150,),
+        actions: [
+          FlatButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('Ok',style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,fontSize: 15),),
+          ),
+        ],
+        elevation: 24,
+        backgroundColor: Color(0xA6e59191),
+      ),
+    );
+    }
 
   Widget buildUser(){
     return Column(

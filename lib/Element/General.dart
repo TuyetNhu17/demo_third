@@ -68,15 +68,20 @@ class _CartCounterState extends State<CartCounter>
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        buildOutlineButton(
-          icon: Icons.remove,
-          press: ()  { 
-            if (numOfItems>1){
-              setState(() {
-                numOfItems--;
-              });
-            }
-          },
+        SizedBox(
+          width: 40,
+          height: 32,
+          child: OutlineButton(
+            padding: EdgeInsets.zero,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(13),
+            ),
+            onPressed:() {
+          setState(() {
+            numOfItems--;
+          });},
+            child: Icon(Icons.remove),
+          ),
         ),
         Padding(
           padding: const  EdgeInsets.symmetric(horizontal: 15),
@@ -85,11 +90,22 @@ class _CartCounterState extends State<CartCounter>
             style: Theme.of(context).textTheme.headline6,
           ),
         ),
-        buildOutlineButton(icon: Icons.add, press: () {
+        SizedBox(
+          width: 40,
+          height: 32,
+          child: OutlineButton(
+            padding: EdgeInsets.zero,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(13),
+            ),
+            onPressed:() {
           setState(() {
             numOfItems++;
-          });
-        }),
+          });},
+            child: Icon(Icons.add),
+          ),
+        )
+        
       ],
     ) ;
   }

@@ -16,7 +16,6 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-
   int _quatity = 1;
   Widget quatity(String a) {
     return Column(
@@ -27,8 +26,74 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  SizedBox buildOutlineButton({required IconData icon, required Function() press}){
-    return SizedBox(
+  @override
+  Widget build(BuildContext context) {
+    var list = Provider.of<LayGioHangProvider>(context, listen: false);
+    list.laygiohang(widget.acc[0].id);
+    List<GioHang> giohang = list.giohang;
+
+    int tong = 0;
+    for(var cart in giohang){
+      tong = tong + (cart.don_gia * cart.so_luong_mua);
+    }
+
+    xoa(int id) async {
+      var res = await xoagiohang(id);
+      if (res == 'Success') {
+        list.laygiohang(widget.acc[0].id);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (_) => CartScreen(
+                      acc: widget.acc,
+                    )));
+      }
+    }
+
+  show(){
+      return showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text('Hãy thêm sản phẩm vào giỏ hàng nhé!',style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,fontSize: 15),
+        textAlign: TextAlign.center,),
+        content: Image.asset('images/pic.gif',width: 350, height: 150,),
+        actions: [
+          FlatButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('Ok',style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,fontSize: 15),),
+          ),
+        ],
+        elevation: 24,
+        backgroundColor: Color(0xA6e59191),
+      ),
+    );
+    }
+
+  updatesoluong(int id, int update) async {
+    Map<String, int> data = {
+      '_id': id,
+      '_update': update,
+    };
+    var res = await chinhsoluong(data);
+    if (res == 'Success') {
+      list.laygiohang(widget.acc[0].id);
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (_) => CartScreen(
+                    acc: widget.acc,
+                  )));
+    }
+  }
+
+
+    capnhatsoluong(int soluongsp, int id) {
+    int soluong = soluongsp;
+    return Row(
+      children: <Widget>[
+        SizedBox(
           width: 40,
           height: 32,
           child: OutlineButton(
@@ -36,17 +101,41 @@ class _CartScreenState extends State<CartScreen> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(13),
             ),
-            onPressed: press,
-            child: Icon(icon),
+            onPressed: () {
+              updatesoluong(id, 0);
+            },
+            child: Icon(Icons.remove),
           ),
-        );
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Text(
+            soluong.toString().padLeft(2, "0"),
+            style: Theme.of(context).textTheme.headline6,
+          ),
+        ),
+        SizedBox(
+          width: 40,
+          height: 32,
+          child: OutlineButton(
+            padding: EdgeInsets.zero,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(13),
+            ),
+            onPressed: () {
+              updatesoluong(id, 1);
+            },
+            child: Icon(Icons.add),
+          ),
+        )
+      ],
+    );
   }
-  
-  Widget content(List<GioHang> giohang) {
+
+    Widget content(List<GioHang> giohang) {
     return Wrap(
         children: List.generate(giohang.length, (index) {
-      String link =
-          'http://10.0.2.2:8000/storage/' + giohang[index].hinh_anh;
+      String link = 'http://10.0.2.2:8000/storage/' + giohang[index].hinh_anh;
       return Padding(
         padding: const EdgeInsets.only(bottom: 10),
         child: Container(
@@ -88,7 +177,8 @@ class _CartScreenState extends State<CartScreen> {
                   SizedBox(
                     height: 10,
                   ),
-                  quatity(giohang[index].so_luong_mua.toString()),
+                  capnhatsoluong(
+                      giohang[index].so_luong_mua, giohang[index].id),
                   SizedBox(
                     height: 10,
                   ),
@@ -100,36 +190,20 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                 ],
-              )
-            ]),
-            Container(
-              alignment: Alignment.bottomRight,
-              padding: EdgeInsets.all(5),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30.0),
-                  gradient: const LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.centerRight,
-                    colors: [
-                      Color(0xc6ff7f50),
-                      Color(0x40ee6a50),
-                    ],
-                  ),
-                ),
               ),
-            ),
+              FlatButton(
+                  onPressed: () {
+                    xoa(giohang[index].id);
+                    print('object');
+                  },
+                  child: Icon(Icons.delete_outline))
+            ]),
           ]),
         ),
       );
     }));
-  }
+  }  
 
-  @override
-  Widget build(BuildContext context) {
-    var list = Provider.of<LayGioHangProvider>(context, listen: false);
-    list.laygiohang(widget.acc[0].id);
-    List<GioHang> giohang = list.giohang;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: DefaultTabController(
@@ -185,7 +259,7 @@ class _CartScreenState extends State<CartScreen> {
                                   future: list.laygiohang(widget.acc[0].id),
                                   builder: (BuildContext context,
                                       AsyncSnapshot abc) {
-                                      return content(giohang);
+                                    return content(giohang);
                                   },
                                 ),
                                 SizedBox(
@@ -205,38 +279,58 @@ class _CartScreenState extends State<CartScreen> {
             ),
           ),
           bottomNavigationBar: SizedBox(
-        height: 50,
-        child: Row(
-          children: [
-            const SizedBox(
-              width: 40,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Row(
-                  children: const [
-                    Text("Thành tiền:", style: TextStyle(color: Color(0xffe59191), fontSize: 20,fontWeight: FontWeight.bold),),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Text("2000000",style: TextStyle(color: Color(0xffe59191), fontSize: 20,fontWeight: FontWeight.bold),),
-                  ],
+            height: 50,
+            child: Row(children: [
+              const SizedBox(
+                width: 20,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Row(
+                    children: [
+                      Text(
+                        "Thành tiền:",
+                        style: TextStyle(
+                            color: Color(0xffe59191),
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      Text(
+                        tong.toString() + 'VND',
+                        style: TextStyle(
+                            color: Color(0xffe59191),
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(
+                width: 40,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  if(tong != 0){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>PayScreen(acc: widget.acc)));
+                  }
+                  else{
+                    show();
+                  }
+                  
+                },
+                child: const Text("Thanh Toán"),
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Color(0xffe59191)),
                 ),
-              ],
-            ),
-            const SizedBox(
-              width: 40,
-            ),
-            ElevatedButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>PayScreen(acc: widget.acc))),
-            child: const Text("Thanh Toán"),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(Color(0xffe59191)),
-            ),
-        ),
-          ]
+              ),
+            ]),
           ),
-        ),
         ),
       ),
     );

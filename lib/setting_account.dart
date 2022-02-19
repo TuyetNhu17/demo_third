@@ -28,6 +28,19 @@ class _ThietLapTKState extends State<ThietLapTK> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Thiết lập tài khoản'),
+        backgroundColor: Color(0xcce59191),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: (){
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: Container(
         child: Column(
         children: <Widget>[

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:giaodien/routes/API/APIgiohanng.dart';
 import 'package:giaodien/routes/API/APIinvoice.dart';
@@ -19,7 +20,7 @@ class _Info extends State<Info> {
   @override
   Widget build(BuildContext context) {
     var list = Provider.of<LayGioHangProvider>(context, listen: false);
-    list.laygiohang(widget.taiKhoan[0].id);
+    list.laygiohang(widget.taiKhoan[0].email);
     List<GioHang> giohang = list.giohang;
     
     Size size = MediaQuery.of(context).size;
@@ -173,12 +174,17 @@ class DetailOrderItem extends StatelessWidget {
           children: <Widget>[
             Container(
               width: 100,
-              decoration:BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(cart.hinh_anh),
-                  fit: BoxFit.cover,
+              child: CachedNetworkImage(
+                  fit: BoxFit.fill,
+                  imageUrl:
+                      'http://10.0.2.2:8000/storage/' + cart.hinh_anh,
+                  placeholder: (context, url) => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    color: Colors.black12,
+                  ),
                 ),
-              ) ,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),

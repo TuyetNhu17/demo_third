@@ -90,6 +90,7 @@ class _SearchProduct extends State<SearchProduct> {
       });
 
   Widget buildProduct(Product product) => ListTile(
+    tileColor: Color(0xffe59191),
         title: Text(product.ten_san_pham),
         subtitle: Text(product.mo_ta),
         onTap: () {

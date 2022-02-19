@@ -20,6 +20,7 @@ import 'package:giaodien/method_pay.dart';
 import 'package:giaodien/pay.dart';
 import 'package:giaodien/shopping_address.dart';
 import 'package:giaodien/setting_account.dart';
+import 'package:giaodien/done.dart';
 import 'routes/API/APIgiohanng.dart';
 
 void main() {
@@ -53,11 +54,12 @@ class MyApp extends StatelessWidget {
         '/invoicedetail': (context) => const InvoiceDetail(),
         '/login': (context) => LoginScreen(),
         '/method_pay': (context) =>  MethodPayScreen(),
-        '/pay': (context) => PayScreen(acc: [],),
+        '/pay': (context) => const PayScreen(acc: [],),
         '/shopping_address': (context) => ShoppingAddressScreen(),
         '/findproduct':(context)=> CustomSearch(),
         '/search': (context) =>  SearchProduct(account: [],),
-        'thietlap': (context) => ThietLapTK(account: [],),
+        '/thietlap': (context) => ThietLapTK(account: [],),
+        '/done': (context) => DonePayScreen(acc: [],),
       },
       debugShowCheckedModeBanner: false,
     );

@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:giaodien/Invoice.dart';
+import 'package:giaodien/cart.dart';
 import 'package:giaodien/routes/API/APIgiohanng.dart';
 import 'package:giaodien/routes/API/APIinvoice.dart';
 import 'package:giaodien/routes/models/account.dart';
@@ -16,7 +18,7 @@ class PayScreen extends StatelessWidget  {
   @override
   Widget build(BuildContext context) {
     var list = Provider.of<LayGioHangProvider>(context, listen: false);
-    list.laygiohang(acc[0].id);
+    list.laygiohang(acc[0].email);
     List<GioHang> giohang = list.giohang;
 
     int tong = 0;
@@ -29,12 +31,12 @@ class PayScreen extends StatelessWidget  {
     {
 
       Map<String ,String > data ={
-        '_id_tai_khoan' : acc[0].id.toString(),  
+        'email' : acc[0].email.toString(),  
         '_dia_chi': acc[0].dia_chi.toString(),
         '_so_dien_thoai': acc[0].so_dien_thoai.toString(),
         '_tong_tien'  :  tong.toString(),
       };
-      print(acc[0].id);
+      print(acc[0].email);
       print(acc[0].dia_chi);
       print(acc[0].so_dien_thoai);
       print(tong);
@@ -44,7 +46,7 @@ class PayScreen extends StatelessWidget  {
       if( checkCreateInvoice == true)
       {
         Map<String ,String > data1 ={
-        '_id_tai_khoan' : acc[0].id.toString(),  
+        'email' : acc[0].email.toString(),  
         };
         var mahd = await HoaDonGet.getInvoiceId(data1);
         print("MaHD la: " + mahd);
@@ -55,6 +57,7 @@ class PayScreen extends StatelessWidget  {
             '_id_san_pham' : cart.id_san_pham.toString(),
             '_so_luong' : cart.so_luong_mua.toString(),
             '_don_gia': cart.don_gia.toString(),
+            '_tong': tong.toString(),
           };
           HoaDonGet.addInvoiceDetail(data2);
         }
@@ -65,6 +68,17 @@ class PayScreen extends StatelessWidget  {
       }
       
     }
+
+    xoaCart(int id) async {
+      Map<String, int> data = {
+        '_id_khach_hang': id,
+      };
+      var res = await doneXoa(data);
+      if (res == 'Success') {
+        print(res);
+      }
+    }
+    
 
     return Scaffold(
       appBar: AppBar(
@@ -146,6 +160,9 @@ class PayScreen extends StatelessWidget  {
                           elevation: 5,
                           onPressed: () {
                             thanhToan(tong);
+                            xoaCart(acc[0].id);
+                            
+                            Navigator.pushNamed(context, '/done');
                           },
                           padding: EdgeInsets.all(15),
                           shape: RoundedRectangleBorder(
@@ -166,8 +183,5 @@ class PayScreen extends StatelessWidget  {
                 ),
               ),
     );
-  }
-
-
-  
+  } 
 }

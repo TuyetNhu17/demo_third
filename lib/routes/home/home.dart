@@ -11,12 +11,11 @@ import 'package:giaodien/routes/product/product.dart';
 import 'package:giaodien/routes/product/product_detail.dart';
 import 'package:provider/provider.dart';
 import '../models/banner.dart';
-import '../account/myhome.dart';
 import '../models/account.dart';
 import 'package:giaodien/setting_account.dart';
 
 class Home extends StatefulWidget {
-   final List<Account> account;
+  final List<Account> account;
   const Home({Key? key, required this.account}) : super(key: key);
   @override
   HomePage createState() => HomePage();
@@ -263,6 +262,19 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
                   context,
                 MaterialPageRoute(
                       builder: (_) => CartScreen(acc: widget.account,)));
+              },
+            ),
+
+            IconButton(
+              icon: const Icon(
+                Icons.logout,
+              ),
+              iconSize: 30,
+              color: Colors.white,
+              splashColor: Colors.pink.shade200,
+              onPressed: () {
+                
+                Navigator.pushReplacementNamed(context,'/login');
               },
             ),
           ],

@@ -1,12 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:giaodien/routes/API/APIgiohanng.dart';
-import 'package:giaodien/routes/API/APIinvoice.dart';
-import 'package:giaodien/routes/models/account.dart';
-import 'package:giaodien/routes/models/giohang.dart';
+import 'package:giaodien/API/APIgiohanng.dart';
+import 'package:giaodien/models/account.dart';
+import 'package:giaodien/models/giohang.dart';
 import 'package:provider/provider.dart';
-import 'package:giaodien/routes/API/APIaccount.dart';
-
 
 class Info extends StatefulWidget{
   final int tongTien;
@@ -21,7 +18,7 @@ class _Info extends State<Info> {
   Widget build(BuildContext context) {
     var list = Provider.of<LayGioHangProvider>(context, listen: false);
     list.laygiohang(widget.taiKhoan[0].email);
-    List<GioHang> giohang = list.giohang;
+    List giohang = list.giohang;
     
     Size size = MediaQuery.of(context).size;
     return ListView(

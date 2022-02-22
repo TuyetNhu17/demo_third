@@ -28,8 +28,6 @@ class _ProductScreenState extends State<ProductScreen> {
   Widget build(BuildContext context) {
     var sanphamapi = Provider.of<LaySanPhamProvider>(context, listen: false);
     List<Product> sanpham = [];
-    List<Product> sanphamtheodongia = [];
-    List<Product> sanphamtheoten = [];
     if (widget.id == 0) {
       sanpham = sanphamapi.sanphams;
     } else {
@@ -114,7 +112,12 @@ class _ProductScreenState extends State<ProductScreen> {
         FutureBuilder(
             future: sanphamapi.LaySanPham(),
             builder: (context, AsyncSnapshot snapshot) {
-              return cardsp(sanpham);
+              if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        }else{
+          return cardsp(sanpham);
+        }
+              
             }),
       ]);
     }

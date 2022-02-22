@@ -2,11 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:giaodien/API/APIgiohanng.dart';
+import 'package:giaodien/API/APIinvoice.dart';
 import 'package:giaodien/API/APIproduct.dart';
 import 'package:giaodien/Element/General.dart';
 import 'package:giaodien/models/account.dart';
 import 'package:giaodien/models/banner.dart';
 import 'package:giaodien/models/product.dart';
+import 'package:giaodien/screen/invoice/Invoice.dart';
 import 'package:giaodien/screen/product/list_product.dart';
 import 'package:giaodien/screen/product/product_detail.dart';
 import 'package:giaodien/screen/product/product_banner.dart';
@@ -23,7 +25,6 @@ class Home extends StatefulWidget {
 
 class HomePage extends State<Home> with SingleTickerProviderStateMixin {
   Future<List<Product>> list = SanPhamTrangChu();
-  
 
   late PageController _pageController;
   @override
@@ -76,8 +77,10 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) =>
-                                      SanPham(id: banner[index].id,acc: widget.account,)));
+                                  builder: (_) => SanPham(
+                                        id: banner[index].id,
+                                        acc: widget.account,
+                                      )));
                         },
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
@@ -102,7 +105,9 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
     var sanphamapi = Provider.of<LaySanPhamProvider>(context, listen: false);
     sanphamapi.LaySanPham();
     var giohangapi = Provider.of<LayGioHangProvider>(context, listen: false);
-   giohangapi.laygiohang(widget.account[0].id);
+    giohangapi.laygiohang(widget.account[0].id);
+    var donhangapi = Provider.of<LayDonHangProvider>(context, listen: false);
+    donhangapi.laydonhang(widget.account[0].email);
     var _container = Container(
       height: 230,
       child: PageView.builder(
@@ -152,7 +157,10 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (_) => PageDetail(product: abc.data[index],acc: widget.account,)));
+                      builder: (_) => PageDetail(
+                            product: abc.data[index],
+                            acc: widget.account,
+                          )));
             },
             child: Card(
               color: Color(0xffe59191),
@@ -224,7 +232,10 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (_) => ProductScreen(id: 0,acc: widget.account,)));
+                      builder: (_) => ProductScreen(
+                            id: 0,
+                            acc: widget.account,
+                          )));
             },
           ))
     ]);
@@ -240,14 +251,12 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
           automaticallyImplyLeading: false,
           title: Container(
             child: IconButton(
-              
               icon: Icon(Icons.search),
               color: Colors.white,
-              onPressed: (){
+              onPressed: () {
                 Navigator.pushNamed(context, '/search');
               },
               iconSize: 30,
-              
             ),
           ),
           actions: [
@@ -258,13 +267,15 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
               iconSize: 30,
               color: Colors.white,
               splashColor: Colors.pink.shade200,
-              onPressed: () { Navigator.push(
-                  context,
-                MaterialPageRoute(
-                      builder: (_) => CartScreen(acc: widget.account,)));
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => CartScreen(
+                              acc: widget.account,
+                            )));
               },
             ),
-
             IconButton(
               icon: const Icon(
                 Icons.logout,
@@ -273,8 +284,12 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
               color: Colors.white,
               splashColor: Colors.pink.shade200,
               onPressed: () {
-                
-                Navigator.pushReplacementNamed(context,'/login');
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => Invoice(
+                              acc: widget.account,
+                            )));
               },
             ),
           ],
@@ -286,10 +301,7 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
               icon: Icon(Icons.home),
               label: 'Home',
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Tôi'
-            ),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Tôi'),
           ],
           backgroundColor: Color(0xffe59191),
           selectedItemColor: Colors.white,
@@ -299,12 +311,18 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
               context,
               PageRouteBuilder(pageBuilder: (context, animation, secon) {
                 if (index == 0) {
-                  return Home(account: widget.account,);
+                  return Home(
+                    account: widget.account,
+                  );
                 }
                 if (index == 1) {
-                  return ThietLapTK(account: widget.account,);
+                  return ThietLapTK(
+                    account: widget.account,
+                  );
                 }
-               return ThietLapTK(account: widget.account,);
+                return ThietLapTK(
+                  account: widget.account,
+                );
               }),
             );
           },

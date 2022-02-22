@@ -1,14 +1,13 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:giaodien/models/donhang.dart';
+import 'package:giaodien/screen/invoice/InvoiceDetail.dart';
 import 'colorbutton.dart';
-import 'decor.dart';
 
-Widget don(String button,BuildContext context) {
-  return InkWell(
-    onTap: () {
-      Navigator.pushNamed(context, '/invoicedetail');
-    },
-    child: Container(
+Widget don(BuildContext context,DonHang hd) {
+  String link = 'http://10.0.2.2:8000/storage/' + hd.hinh_anh;
+  
+  return  Container(
       decoration: BoxDecoration(
         color: Colors.white,
       ),
@@ -17,15 +16,30 @@ Widget don(String button,BuildContext context) {
           height: 10,
         ),
         Row(children: [
-          Image.asset('images/camtumixrose.jpg', width: 100, height: 100),
+          Container(
+            height: 100,
+            width: 100,
+            margin: EdgeInsets.only(left: 10),
+                      child: CachedNetworkImage(
+                        fit: BoxFit.fill,
+                        imageUrl: link,
+                        placeholder: (context, url) => const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          color: Colors.black12,
+                        ),
+                      ),
+                    ),
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Container(
-                constraints: BoxConstraints(maxWidth: 300),
+                alignment: Alignment.bottomRight,
+                constraints: BoxConstraints(maxWidth: 250),
                 child: Text(
-                  'Hoa cẩm tú cầu và hoa hồnggggggggg',
+                  hd.ten_san_pham,
                   overflow: TextOverflow.ellipsis,
                   softWrap: false,
                   maxLines: 1,
@@ -33,13 +47,13 @@ Widget don(String button,BuildContext context) {
                 ),
               ),
               Text(
-                'x1',
+                'x'+hd.so_luong_ct.toString(),
                 style: TextStyle(
                   fontSize: 20,
                 ),
               ),
               Text(
-                '50.000d',
+                hd.don_gia_ct.toString()+' VND',
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.orange,
@@ -59,15 +73,7 @@ Widget don(String button,BuildContext context) {
             children: [
               Expanded(
                 child: Text(
-                  '3 sản phẩm',
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Text(
-                  'Thành tiền : 250000',
+                  'Thành tiền : '+hd.tong_tien.toString()+' VND',
                   style: TextStyle(
                     fontSize: 20,
                   ),
@@ -85,7 +91,7 @@ Widget don(String button,BuildContext context) {
           child: colorbutton(
             FlatButton(
               child: Text(
-                button,
+                'Chi tiết',
                 style: const TextStyle(
                   fontSize: 16.0,
                   fontFamily: 'Righteous',
@@ -96,11 +102,15 @@ Widget don(String button,BuildContext context) {
               color: Colors.transparent,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)),
-              onPressed: () => print('aaaaaa'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => InvoiceDetail(donhang: hd,)));
+              },
             ),
           ),
         ),
       ]),
-    ),
   );
 }

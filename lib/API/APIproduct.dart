@@ -8,9 +8,10 @@ List<Product> sanphams(String response) {
   return list.map<Product>((model) => Product.fromJson(model)).toList();
 }
 
+String _url = 'http://10.0.2.2:8000/api/';
 Future<List<Product>> laySanPhamall() async {
   final response =
-      await http.get(Uri.parse('http://10.0.2.2:8000/api/sanPham'));
+      await http.get(Uri.parse(_url+'sanPham'));
   if (response.statusCode == 200) {
     return sanphams(response.body);
   } else {
@@ -22,7 +23,7 @@ class LaySanPhamProvider extends ChangeNotifier {
   List<Product> sanphams = [];
   Future<void> LaySanPham() async {
     List<Product> sanpham2 = [];
-    var url = "http://10.0.2.2:8000/api/sanPham";
+    var url =_url+'sanPham';
     http.Response response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       dynamic jsondata = json.decode(response.body);
@@ -41,7 +42,7 @@ class LaySanPhamProvider extends ChangeNotifier {
 
 Future<List<Product>> SanPhamTrangChu() async {
   final response =
-      await http.get(Uri.parse('http://10.0.2.2:8000/api/sanpham/trangchu'));
+      await http.get(Uri.parse(_url+'sanpham/trangchu'));
   if (response.statusCode == 200) {
     return sanphams(response.body);
   } else {
@@ -51,7 +52,7 @@ Future<List<Product>> SanPhamTrangChu() async {
 
 Future<List<Product>> SanPhamMoi() async {
   final response =
-      await http.get(Uri.parse('http://10.0.2.2:8000/api/sanpham/sanphammoi'));
+      await http.get(Uri.parse(_url+'sanpham/sanphammoi'));
   if (response.statusCode == 200) {
     return sanphams(response.body);
   } else {
@@ -61,7 +62,7 @@ Future<List<Product>> SanPhamMoi() async {
 
 Future<List<Product>> SanPhamBanChay() async {
   final response = await http
-      .get(Uri.parse('http://10.0.2.2:8000/api/sanpham/sanphambanchay'));
+      .get(Uri.parse(_url+'sanpham/sanphambanchay'));
   if (response.statusCode == 200) {
     return sanphams(response.body);
   } else {
@@ -69,15 +70,27 @@ Future<List<Product>> SanPhamBanChay() async {
   }
 }
 
-Future<List<Product>>fetchSearch(String query) async {
+Future<List<Product>> SanPhamNoiBat() async {
+  final response = await http
+      .get(Uri.parse(_url+'sanpham/sanphamnoibat'));
+  if (response.statusCode == 200) {
+    return sanphams(response.body);
+  } else {
+    throw Exception('No find data');
+  }
+}
+
+Future<List<Product>> fetchSearch(String query) async {
   final response = await http.get(Uri.parse('http://10.0.2.2:8000/api/sp/ds'));
   if (response.statusCode == 200) {
     List products = jsonDecode(response.body);
-    return products.map<Product>((json)=>Product.fromJson(json)).where((products) {
+    return products
+        .map<Product>((json) => Product.fromJson(json))
+        .where((products) {
       final titleLower = products.ten_san_pham.toLowerCase();
       final searchLower = query.toLowerCase();
       return titleLower.contains(searchLower);
-    } ).toList();
+    }).toList();
   } else {
     throw Exception('No find data');
   }

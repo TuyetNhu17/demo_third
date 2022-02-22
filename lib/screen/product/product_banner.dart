@@ -16,8 +16,10 @@ class SanPham extends StatelessWidget {
     Future<List<Product>> lstSanPham;
     if (id == 1) {
       lstSanPham = SanPhamBanChay();
-    } else {
+    } else if(id==2) {
       lstSanPham = SanPhamMoi();
+    }else{
+      lstSanPham = SanPhamNoiBat();
     }
 
     Widget listSanPham() {

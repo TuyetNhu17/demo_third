@@ -21,7 +21,6 @@ class PayScreen extends StatelessWidget  {
     for(var cart in giohang){
       tong = tong + (cart.don_gia * cart.so_luong_mua);
     }
-    print(tong);
 
     Future thanhToan(var tong) async
     {

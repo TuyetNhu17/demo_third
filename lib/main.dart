@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:giaodien/API/APIinvoice.dart';
 import 'package:giaodien/screen/pay/pay.dart';
 import 'package:giaodien/screen/product/product_banner.dart';
 import 'package:giaodien/screen/search/search.dart';
@@ -19,14 +20,14 @@ import 'package:giaodien/screen/account/setting_account.dart';
 import 'package:giaodien/screen/cart/done.dart';
 import 'screen/home/home.dart';
 import 'screen/invoice/Invoice.dart';
-import 'screen/invoice/InvoiceDetail.dart';
 import 'screen/pay/method_pay.dart';
 import 'screen/screen_load/screen_load.dart';
 
 void main() {
  runApp(MultiProvider(providers:[
     ChangeNotifierProvider(create: (context) => LaySanPhamProvider(),),
-    ChangeNotifierProvider(create: (context) => LayGioHangProvider(),)
+    ChangeNotifierProvider(create: (context) => LayGioHangProvider(),),
+    ChangeNotifierProvider(create: (context) => LayDonHangProvider(),)
   ],
   child:  const MyApp(),
   ));
@@ -50,8 +51,7 @@ class MyApp extends StatelessWidget {
         '/changepass': (context) => const ChangePassScreen(),
         '/review': (context) => const Review(),
         '/reviewform': (context) => const ReviewFormScreen(),
-        '/invoice': (context) => const Invoice(),
-        '/invoicedetail': (context) => const InvoiceDetail(),
+        '/invoice': (context) => Invoice(acc: [],),
         '/login': (context) => LoginScreen(),
         '/method_pay': (context) =>  MethodPayScreen(),
         '/pay': (context) => const PayScreen(acc: [],),

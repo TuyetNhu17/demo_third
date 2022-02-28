@@ -7,6 +7,7 @@ import 'package:giaodien/API/APIproduct.dart';
 import 'package:giaodien/Element/General.dart';
 import 'package:giaodien/models/account.dart';
 import 'package:giaodien/models/banner.dart';
+import 'package:giaodien/models/donhang.dart';
 import 'package:giaodien/models/product.dart';
 import 'package:giaodien/screen/invoice/Invoice.dart';
 import 'package:giaodien/screen/product/list_product.dart';
@@ -106,8 +107,6 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
     sanphamapi.LaySanPham();
     var giohangapi = Provider.of<LayGioHangProvider>(context, listen: false);
     giohangapi.laygiohang(widget.account[0].id);
-    var donhangapi = Provider.of<LayDonHangProvider>(context, listen: false);
-    donhangapi.laydonhang(widget.account[0].email);
     var _container = Container(
       height: 230,
       child: PageView.builder(
@@ -284,11 +283,14 @@ class HomePage extends State<Home> with SingleTickerProviderStateMixin {
               color: Colors.white,
               splashColor: Colors.pink.shade200,
               onPressed: () {
+                var donhangAPI = Provider.of<LayDonHangProvider>(context, listen: false);
+    donhangAPI.laydonhang(widget.account[0].email);
+    List<DonHang> listDonHang = donhangAPI.donhang;
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (_) => Invoice(
-                              acc: widget.account,
+                              acc: widget.account,donhang: listDonHang,
                             )));
               },
             ),

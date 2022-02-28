@@ -12,7 +12,8 @@ final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
 class Invoice extends StatelessWidget {
   final List<Account> acc;
-  const Invoice({Key? key, required this.acc}) : super(key: key);
+  final List<DonHang> donhang;
+  const Invoice({Key? key, required this.acc, required this.donhang}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class Invoice extends StatelessWidget {
     };
     donhangAPI.laydonhang(acc[0].email);
 
-    List<DonHang> listDonHang = donhangAPI.donhang;
+    List<DonHang> listDonHang = donhang;
     List<DonHang> listPending = [];
     List<DonHang> listToship = [];
     List<DonHang> listToreceive = [];
@@ -67,10 +68,7 @@ class Invoice extends StatelessWidget {
             ),
             body: background1(
                 TabBarView(children: [
-                  FutureBuilder(
-                    future: donhangAPI.laydonhang(acc[0].email),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      return ListView(
+                   ListView(
                         children: [
                           for (var inv in listPending)
                             Column(
@@ -80,10 +78,7 @@ class Invoice extends StatelessWidget {
                                   height: 15,
                                 ),
                               ],
-                            )
-                        ],
-                      );
-                    },
+                            )]
                   ),
                   ListView(children: [
                     for (var inv in listToship)

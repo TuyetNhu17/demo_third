@@ -5,6 +5,7 @@ import 'package:giaodien/Element/General.dart';
 import 'package:giaodien/models/account.dart';
 import 'package:giaodien/models/product.dart';
 import 'package:giaodien/screen/product/product_detail.dart';
+import 'package:intl/intl.dart';
 
 class SanPham extends StatelessWidget {
   final int id;
@@ -146,7 +147,7 @@ class SanPham extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                'Giá:  ${abc.data[index].don_gia} VNĐ',
+                'Giá:  ${NumberFormat.decimalPattern().format(abc.data[index].don_gia)} VNĐ',
                 style: const TextStyle(
                   fontFamily: 'Times New Roman',
                   fontSize: 15,

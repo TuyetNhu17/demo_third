@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:giaodien/API/APIinvoice.dart';
 import 'package:giaodien/screen/pay/pay.dart';
 import 'package:giaodien/screen/product/product_banner.dart';
@@ -24,14 +25,37 @@ import 'screen/pay/method_pay.dart';
 import 'screen/screen_load/screen_load.dart';
 
 void main() {
- runApp(MultiProvider(providers:[
-    ChangeNotifierProvider(create: (context) => LaySanPhamProvider(),),
-    ChangeNotifierProvider(create: (context) => LayGioHangProvider(),),
-    ChangeNotifierProvider(create: (context) => LayDonHangProvider(),)
-  ],
-  child:  const MyApp(),
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (context) => LaySanPhamProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => LayGioHangProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => LayDonHangProvider(),
+      )
+    ],
+    child: const MyApp(),
   ));
+  configLoading();
 }
+ void configLoading() {
+      EasyLoading.instance
+        ..displayDuration = const Duration(milliseconds: 1000)
+        ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+        ..loadingStyle = EasyLoadingStyle.dark
+        ..indicatorSize = 45.0
+        ..radius = 10.0
+        ..progressColor = Colors.yellow
+        ..backgroundColor = Colors.green
+        ..indicatorColor = Colors.yellow
+        ..textColor = Colors.yellow
+        ..maskColor = Colors.blue.withOpacity(0.5)
+        ..userInteractions = true
+        ..dismissOnTap = false;
+    }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -42,8 +66,12 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const ScreenLoad(),
-        '/second': (context) => const Home(account: [],),
-        '/myhome': (context) => const MyHome(account: [],),
+        '/second': (context) => const Home(
+              account: [],
+            ),
+        '/myhome': (context) => const MyHome(
+              account: [],
+            ),
         '/setting': (context) => const PageSetting(),
         '/profile': (context) => const PageProFile(),
         '/signup': (context) => const SignupSreen(),
@@ -51,15 +79,25 @@ class MyApp extends StatelessWidget {
         '/changepass': (context) => const ChangePassScreen(),
         '/review': (context) => const Review(),
         '/reviewform': (context) => const ReviewFormScreen(),
-        '/invoice': (context) => Invoice(acc: [],),
+        '/invoice': (context) => Invoice(
+              acc: [], donhang: [],
+            ),
         '/login': (context) => LoginScreen(),
-        '/method_pay': (context) =>  MethodPayScreen(),
-        '/pay': (context) => const PayScreen(acc: [],),
+        '/method_pay': (context) => MethodPayScreen(),
+        '/pay': (context) => const PayScreen(
+              acc: [],
+            ),
         '/shopping_address': (context) => ShoppingAddressScreen(),
-        '/findproduct':(context)=> CustomSearch(),
-        '/search': (context) =>  SearchProduct(account: [],),
-        '/thietlap': (context) => ThietLapTK(account: [],),
-        '/done': (context) => DonePayScreen(acc: [],),
+        '/findproduct': (context) => CustomSearch(),
+        '/search': (context) => SearchProduct(
+              account: [],
+            ),
+        '/thietlap': (context) => ThietLapTK(
+              account: [],
+            ),
+        '/done': (context) => DonePayScreen(
+              acc: [],
+            ),
       },
       debugShowCheckedModeBanner: false,
     );

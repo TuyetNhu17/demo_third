@@ -6,6 +6,7 @@ import 'package:giaodien/models/account.dart';
 import 'package:giaodien/models/product.dart';
 import 'package:giaodien/screen/home/home.dart';
 import 'package:giaodien/screen/product/product_detail.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'category.dart';
@@ -201,7 +202,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    'Giá:  ${sanpham[index].don_gia} VNĐ',
+                    'Giá:  ${NumberFormat.decimalPattern().format(sanpham[index].don_gia)} VNĐ',
                     style: const TextStyle(
                       fontFamily: 'Times New Roman',
                       fontSize: 15,

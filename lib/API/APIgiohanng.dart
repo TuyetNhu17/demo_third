@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:giaodien/models/giohang.dart';
 import 'package:http/http.dart' as http;
 
@@ -8,8 +9,11 @@ Future themgiohang(Map<String, String> data) async {
   var url = _url + 'gioHang';
   var request = await http.post(Uri.parse(url),
       body: jsonEncode(data), headers: _setHeader());
+  
   if (request.statusCode == 200) {
     if (request.body == 'Success') {
+      
+
       return 'Success';
     } else {
       return 'TooMuch';
@@ -74,8 +78,6 @@ class LayGioHangProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
-
-
 
 _setHeader() => {
       'Content-Type': 'application/json; charset=utf-8',

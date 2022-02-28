@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:giaodien/models/ct_donhang.dart';
 import 'package:giaodien/models/invoice.dart';
 import 'package:giaodien/models/donhang.dart';
@@ -94,7 +95,7 @@ class LayDonHangProvider extends ChangeNotifier {
 
   Future<void> laydonhang(email) async {
     List<DonHang> donhang2 = [];
-    var url = _url + 'invoice/show/'+email;
+    var url = _url + 'invoice/show/' + email;
     var response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       dynamic jsondata = json.decode(response.body);
@@ -109,20 +110,30 @@ class LayDonHangProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> laychitiet(data) async {
-    List<CT_DonHang> ctdonhang2 = [];
+  List<CT_DonHang> ctdh(String response) {
+    var list = jsonDecode(response);
+    return list.map<CT_DonHang>((model) => CT_DonHang.fromJson(model)).toList();
+  }
+
+  Future<List<CT_DonHang>> laychitiet(data) async {
     var url = _url + 'invoiceDetail/show';
     var response = await http.post(Uri.parse(url),
         headers: _setHeader(), body: jsonEncode(data));
     if (response.statusCode == 200) {
-      dynamic jsondata = json.decode(response.body);
-      dynamic data = jsondata["data"];
-      data.forEach((i) {
-        ctdonhang2.add(CT_DonHang.fromJson(i));
-      });
+      return ctdh(response.body);
     } else {
       throw Exception('No find data');
     }
-    ctdonhang = ctdonhang2;
+  }
+
+  Future<String> huydonhang(mahd) async {
+    var url = _url + 'invoice/huy/' + mahd;
+    EasyLoading.show();
+    var response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      return "Success";
+    } else {
+      return "Fail";
+    }
   }
 }

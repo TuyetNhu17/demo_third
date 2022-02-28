@@ -226,11 +226,10 @@ class Signup extends State<SignupSreen> {
     };
     var res = await postData(data, _imageFile == null ? null : _imageFile);
     if (res == 'Success') {
-      Navigator.pushReplacementNamed(context,'/login');
+      Navigator.pushReplacementNamed(context, '/login');
     } else {
       print('Fail');
     }
-    print(res);
   }
 
   void takePhoto() async {
@@ -258,7 +257,7 @@ class Signup extends State<SignupSreen> {
               right: 20.0,
               child: InkWell(
                   onTap: () {
-                    takePhoto(); 
+                    takePhoto();
                   },
                   child: Icon(
                     Icons.camera_alt,

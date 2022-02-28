@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:giaodien/models/donhang.dart';
 import 'package:giaodien/screen/invoice/InvoiceDetail.dart';
+import 'package:intl/intl.dart';
 import 'colorbutton.dart';
 
 Widget don(BuildContext context,DonHang hd) {
@@ -53,7 +54,7 @@ Widget don(BuildContext context,DonHang hd) {
                 ),
               ),
               Text(
-                hd.don_gia_ct.toString()+' VND',
+                NumberFormat.decimalPattern().format(hd.don_gia_ct)+' VND',
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.orange,
@@ -73,7 +74,7 @@ Widget don(BuildContext context,DonHang hd) {
             children: [
               Expanded(
                 child: Text(
-                  'Thành tiền : '+hd.tong_tien.toString()+' VND',
+                  'Thành tiền : '+NumberFormat.decimalPattern().format(hd.tong_tien)+' VND',
                   style: TextStyle(
                     fontSize: 20,
                   ),

@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:giaodien/API/APIgiohanng.dart';
 import 'package:giaodien/Element/General.dart';
 import 'package:giaodien/Element/colorbutton.dart';
 import 'package:giaodien/models/account.dart';
 import 'package:giaodien/models/product.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class PageDetail extends StatefulWidget {
   final Product product;
@@ -18,7 +21,6 @@ class PageDetail extends StatefulWidget {
 }
 
 class Detail extends State<PageDetail> {
-  
   themGioHang() async {
     Map<String, String> data = {
       '_idsanpham': widget.product.id.toString(),
@@ -26,9 +28,12 @@ class Detail extends State<PageDetail> {
       '_soluongmua': quality.toString()
     };
     var res = await themgiohang(data);
+
     var giohangapi = Provider.of<LayGioHangProvider>(context, listen: false);
-   giohangapi.laygiohang(widget.acc[0].id);
-    thongbao(res);
+    giohangapi.laygiohang(widget.acc[0].id);
+
+  
+     thongbao(res);
   }
 
   thongbao(mess) {
@@ -41,7 +46,7 @@ class Detail extends State<PageDetail> {
       a = 'Vượt quá số lượng tồn kho';
       icon = Icons.sentiment_dissatisfied;
     }
-    
+
     return showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -63,6 +68,15 @@ class Detail extends State<PageDetail> {
                     child: Text('Xong'))
               ],
             ));
+    
+  //   // return Fluttertoast.showToast(
+  //   //     msg: a,
+  //   //     fontSize: 20,
+  //   //     toastLength: Toast.LENGTH_LONG,
+  //   //     gravity: ToastGravity.CENTER,
+  //   //     backgroundColor: Colors.white,
+  //   //     textColor: Colors.black54,
+  //   //     timeInSecForIosWeb: 2);
   }
 
   var quality = 1;
@@ -234,7 +248,7 @@ class Detail extends State<PageDetail> {
         const SizedBox(
           height: 30,
         ),
-        decri('Giá:   ', '${widget.product.don_gia}  VNĐ'),
+        decri('Giá:   ',NumberFormat.decimalPattern().format( widget.product.don_gia)+' VND'),
         const SizedBox(
           height: 30,
         ),
@@ -293,7 +307,7 @@ class Detail extends State<PageDetail> {
                   BoxDecoration(borderRadius: BorderRadius.circular(70)),
               child: colorbutton(
                 FlatButton(
-                  onPressed: () {
+                  onPressed: () async{
                     themGioHang();
                   },
                   child: const Text(
